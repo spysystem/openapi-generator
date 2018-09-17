@@ -1,0 +1,13 @@
+{
+    "name": "spysystem/openapi-generator",
+	"license": "proprietary",
+	"type": "library",
+	"description": "",
+	"authors": [
+        {
+            "name": "Mads Føhns",
+            "email": "mads@spysystem.dk"
+        }
+    ],
+    "require": {}
+}
