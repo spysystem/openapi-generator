@@ -35,6 +35,7 @@ class OuterEnumTest extends TestCase
     {
         $json = '{
             "enum_string": "UPPER",
+            "enum_string_required": "UPPER",
             "enum_integer": -1,
             "enum_number": -1.2, 
             "outerEnum": "approved"
