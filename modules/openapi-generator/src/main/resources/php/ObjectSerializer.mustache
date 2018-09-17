@@ -455,6 +455,10 @@ class ObjectSerializer
                 }
             }
 
+            if (is_array($data)) {
+                 $data = (object)$data;
+            }
+
             /** @var ModelInterface $instance */
             $instance = new $class();
             foreach ($instance::openAPITypes() as $property => $type) {
