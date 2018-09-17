@@ -30,6 +30,9 @@ namespace OpenAPI\Client\Api;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
+#region SPY Code
+use GuzzleHttp\Cookie\CookieJar;
+#endregion
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\MultipartStream;
 use GuzzleHttp\Psr7\Request;
@@ -63,6 +66,32 @@ class FakeApi
      * @var HeaderSelector
      */
     protected $headerSelector;
+
+	#region SPY Code
+	protected $bXDebugOnInstance	= false;
+	protected $bXDebugOnNextRequest;
+
+	/**
+	 * @param bool $bXDebugOnInstance
+	 * @return $this
+	 */
+	public function setXDebugOnInstance(bool $bXDebugOnInstance)
+	{
+		$this->bXDebugOnInstance	= $bXDebugOnInstance;
+
+		return $this;
+	}
+
+	/**
+	 * @return $this
+	 */
+	public function setXDebugOnNextRequest()
+	{
+		$this->bXDebugOnNextRequest	= true;
+
+		return $this;
+	}
+	#endregion
 
     /**
      * @param ClientInterface $client
@@ -221,7 +250,7 @@ class FakeApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    protected function createXmlItemRequest($xml_item)
+    public function createXmlItemRequest($xml_item)
     {
         // verify the required parameter 'xml_item' is set
         if ($xml_item === null || (is_array($xml_item) && count($xml_item) === 0)) {
@@ -369,6 +398,9 @@ class FakeApi
                         $content = $responseBody; //stream goes to serializer
                     } else {
                         $content = $responseBody->getContents();
+                        if ('bool' !== 'string') {
+                            $content = json_decode($content);
+                        }
                     }
 
                     return [
@@ -384,6 +416,9 @@ class FakeApi
                 $content = $responseBody; //stream goes to serializer
             } else {
                 $content = $responseBody->getContents();
+                if ('bool' !== 'string') {
+                    $content = json_decode($content);
+                }
             }
 
             return [
@@ -484,7 +519,7 @@ class FakeApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    protected function fakeOuterBooleanSerializeRequest($body = null)
+    public function fakeOuterBooleanSerializeRequest($body = null)
     {
 
         $resourcePath = '/fake/outer/boolean';
@@ -626,6 +661,9 @@ class FakeApi
                         $content = $responseBody; //stream goes to serializer
                     } else {
                         $content = $responseBody->getContents();
+                        if ('\OpenAPI\Client\Model\OuterComposite' !== 'string') {
+                            $content = json_decode($content);
+                        }
                     }
 
                     return [
@@ -641,6 +679,9 @@ class FakeApi
                 $content = $responseBody; //stream goes to serializer
             } else {
                 $content = $responseBody->getContents();
+                if ('\OpenAPI\Client\Model\OuterComposite' !== 'string') {
+                    $content = json_decode($content);
+                }
             }
 
             return [
@@ -741,7 +782,7 @@ class FakeApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    protected function fakeOuterCompositeSerializeRequest($body = null)
+    public function fakeOuterCompositeSerializeRequest($body = null)
     {
 
         $resourcePath = '/fake/outer/composite';
@@ -883,6 +924,9 @@ class FakeApi
                         $content = $responseBody; //stream goes to serializer
                     } else {
                         $content = $responseBody->getContents();
+                        if ('float' !== 'string') {
+                            $content = json_decode($content);
+                        }
                     }
 
                     return [
@@ -898,6 +942,9 @@ class FakeApi
                 $content = $responseBody; //stream goes to serializer
             } else {
                 $content = $responseBody->getContents();
+                if ('float' !== 'string') {
+                    $content = json_decode($content);
+                }
             }
 
             return [
@@ -998,7 +1045,7 @@ class FakeApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    protected function fakeOuterNumberSerializeRequest($body = null)
+    public function fakeOuterNumberSerializeRequest($body = null)
     {
 
         $resourcePath = '/fake/outer/number';
@@ -1140,6 +1187,9 @@ class FakeApi
                         $content = $responseBody; //stream goes to serializer
                     } else {
                         $content = $responseBody->getContents();
+                        if ('string' !== 'string') {
+                            $content = json_decode($content);
+                        }
                     }
 
                     return [
@@ -1155,6 +1205,9 @@ class FakeApi
                 $content = $responseBody; //stream goes to serializer
             } else {
                 $content = $responseBody->getContents();
+                if ('string' !== 'string') {
+                    $content = json_decode($content);
+                }
             }
 
             return [
@@ -1255,7 +1308,7 @@ class FakeApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    protected function fakeOuterStringSerializeRequest($body = null)
+    public function fakeOuterStringSerializeRequest($body = null)
     {
 
         $resourcePath = '/fake/outer/string';
@@ -1464,7 +1517,7 @@ class FakeApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    protected function testBodyWithFileSchemaRequest($body)
+    public function testBodyWithFileSchemaRequest($body)
     {
         // verify the required parameter 'body' is set
         if ($body === null || (is_array($body) && count($body) === 0)) {
@@ -1684,7 +1737,7 @@ class FakeApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    protected function testBodyWithQueryParamsRequest($query, $body)
+    public function testBodyWithQueryParamsRequest($query, $body)
     {
         // verify the required parameter 'query' is set
         if ($query === null || (is_array($query) && count($query) === 0)) {
@@ -1846,6 +1899,9 @@ class FakeApi
                         $content = $responseBody; //stream goes to serializer
                     } else {
                         $content = $responseBody->getContents();
+                        if ('\OpenAPI\Client\Model\Client' !== 'string') {
+                            $content = json_decode($content);
+                        }
                     }
 
                     return [
@@ -1861,6 +1917,9 @@ class FakeApi
                 $content = $responseBody; //stream goes to serializer
             } else {
                 $content = $responseBody->getContents();
+                if ('\OpenAPI\Client\Model\Client' !== 'string') {
+                    $content = json_decode($content);
+                }
             }
 
             return [
@@ -1961,7 +2020,7 @@ class FakeApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    protected function testClientModelRequest($body)
+    public function testClientModelRequest($body)
     {
         // verify the required parameter 'body' is set
         if ($body === null || (is_array($body) && count($body) === 0)) {
@@ -2245,7 +2304,7 @@ class FakeApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    protected function testEndpointParametersRequest($number, $double, $pattern_without_delimiter, $byte, $integer = null, $int32 = null, $int64 = null, $float = null, $string = null, $binary = null, $date = null, $date_time = null, $password = null, $callback = null)
+    public function testEndpointParametersRequest($number, $double, $pattern_without_delimiter, $byte, $integer = null, $int32 = null, $int64 = null, $float = null, $string = null, $binary = null, $date = null, $date_time = null, $password = null, $callback = null)
     {
         // verify the required parameter 'number' is set
         if ($number === null || (is_array($number) && count($number) === 0)) {
@@ -2622,7 +2681,7 @@ class FakeApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    protected function testEnumParametersRequest($enum_header_string_array = null, $enum_header_string = '-efg', $enum_query_string_array = null, $enum_query_string = '-efg', $enum_query_integer = null, $enum_query_double = null, $enum_form_string_array = '$', $enum_form_string = '-efg')
+    public function testEnumParametersRequest($enum_header_string_array = null, $enum_header_string = '-efg', $enum_query_string_array = null, $enum_query_string = '-efg', $enum_query_integer = null, $enum_query_double = null, $enum_form_string_array = '$', $enum_form_string = '-efg')
     {
 
         $resourcePath = '/fake';
@@ -2905,7 +2964,7 @@ class FakeApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    protected function testGroupParametersRequest($associative_array)
+    public function testGroupParametersRequest($associative_array)
     {
         // unbox the parameters from the associative array
         $required_string_group = array_key_exists('required_string_group', $associative_array) ? $associative_array['required_string_group'] : null;
@@ -3165,7 +3224,7 @@ class FakeApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    protected function testInlineAdditionalPropertiesRequest($param)
+    public function testInlineAdditionalPropertiesRequest($param)
     {
         // verify the required parameter 'param' is set
         if ($param === null || (is_array($param) && count($param) === 0)) {
@@ -3389,7 +3448,7 @@ class FakeApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    protected function testJsonFormDataRequest($param, $param2)
+    public function testJsonFormDataRequest($param, $param2)
     {
         // verify the required parameter 'param' is set
         if ($param === null || (is_array($param) && count($param) === 0)) {
@@ -3500,6 +3559,30 @@ class FakeApi
                 throw new \RuntimeException('Failed to open the debug file: ' . $this->config->getDebugFile());
             }
         }
+
+		#region SPY Code
+		$bEnableXDebug	= $this->bXDebugOnNextRequest;
+
+		if($bEnableXDebug === null)
+		{
+			$bEnableXDebug	= $this->bXDebugOnInstance;
+		}
+
+		$this->bXDebugOnNextRequest	= null;
+
+		if($bEnableXDebug)
+		{
+			if(preg_match('/^(?:https?:\/\/)?([^\/:]+\.[^\/:]+)/i', $this->getConfig()->getHost(), $arrMatches) === 1)
+			{
+				$options['cookies'] = CookieJar::fromArray(
+					[
+						'XDEBUG_SESSION'	=> 'PHPSTORM',
+					],
+					$arrMatches[1]
+				);
+			}
+		}
+		#endregion
 
         return $options;
     }

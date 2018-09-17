@@ -310,6 +310,11 @@ class ObjectSerializer
                     $class = $subclass;
                 }
             }
+
+            if (is_array($data)) {
+                 $data = (object)$data;
+            }
+
             $instance = new $class();
             foreach ($instance::openAPITypes() as $property => $type) {
                 $propertySetter = $instance::setters()[$property];

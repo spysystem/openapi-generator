@@ -30,6 +30,9 @@ namespace OpenAPI\Client\Api;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
+#region SPY Code
+use GuzzleHttp\Cookie\CookieJar;
+#endregion
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\MultipartStream;
 use GuzzleHttp\Psr7\Request;
@@ -63,6 +66,32 @@ class PetApi
      * @var HeaderSelector
      */
     protected $headerSelector;
+
+	#region SPY Code
+	protected $bXDebugOnInstance	= false;
+	protected $bXDebugOnNextRequest;
+
+	/**
+	 * @param bool $bXDebugOnInstance
+	 * @return $this
+	 */
+	public function setXDebugOnInstance(bool $bXDebugOnInstance)
+	{
+		$this->bXDebugOnInstance	= $bXDebugOnInstance;
+
+		return $this;
+	}
+
+	/**
+	 * @return $this
+	 */
+	public function setXDebugOnNextRequest()
+	{
+		$this->bXDebugOnNextRequest	= true;
+
+		return $this;
+	}
+	#endregion
 
     /**
      * @param ClientInterface $client
@@ -221,7 +250,7 @@ class PetApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    protected function addPetRequest($pet)
+    public function addPetRequest($pet)
     {
         // verify the required parameter 'pet' is set
         if ($pet === null || (is_array($pet) && count($pet) === 0)) {
@@ -449,7 +478,7 @@ class PetApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    protected function deletePetRequest($pet_id, $api_key = null)
+    public function deletePetRequest($pet_id, $api_key = null)
     {
         // verify the required parameter 'pet_id' is set
         if ($pet_id === null || (is_array($pet_id) && count($pet_id) === 0)) {
@@ -614,6 +643,9 @@ class PetApi
                         $content = $responseBody; //stream goes to serializer
                     } else {
                         $content = $responseBody->getContents();
+                        if ('\OpenAPI\Client\Model\Pet[]' !== 'string') {
+                            $content = json_decode($content);
+                        }
                     }
 
                     return [
@@ -629,6 +661,9 @@ class PetApi
                 $content = $responseBody; //stream goes to serializer
             } else {
                 $content = $responseBody->getContents();
+                if ('\OpenAPI\Client\Model\Pet[]' !== 'string') {
+                    $content = json_decode($content);
+                }
             }
 
             return [
@@ -729,7 +764,7 @@ class PetApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    protected function findPetsByStatusRequest($status)
+    public function findPetsByStatusRequest($status)
     {
         // verify the required parameter 'status' is set
         if ($status === null || (is_array($status) && count($status) === 0)) {
@@ -889,6 +924,9 @@ class PetApi
                         $content = $responseBody; //stream goes to serializer
                     } else {
                         $content = $responseBody->getContents();
+                        if ('\OpenAPI\Client\Model\Pet[]' !== 'string') {
+                            $content = json_decode($content);
+                        }
                     }
 
                     return [
@@ -904,6 +942,9 @@ class PetApi
                 $content = $responseBody; //stream goes to serializer
             } else {
                 $content = $responseBody->getContents();
+                if ('\OpenAPI\Client\Model\Pet[]' !== 'string') {
+                    $content = json_decode($content);
+                }
             }
 
             return [
@@ -1004,7 +1045,7 @@ class PetApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    protected function findPetsByTagsRequest($tags)
+    public function findPetsByTagsRequest($tags)
     {
         // verify the required parameter 'tags' is set
         if ($tags === null || (is_array($tags) && count($tags) === 0)) {
@@ -1164,6 +1205,9 @@ class PetApi
                         $content = $responseBody; //stream goes to serializer
                     } else {
                         $content = $responseBody->getContents();
+                        if ('\OpenAPI\Client\Model\Pet' !== 'string') {
+                            $content = json_decode($content);
+                        }
                     }
 
                     return [
@@ -1179,6 +1223,9 @@ class PetApi
                 $content = $responseBody; //stream goes to serializer
             } else {
                 $content = $responseBody->getContents();
+                if ('\OpenAPI\Client\Model\Pet' !== 'string') {
+                    $content = json_decode($content);
+                }
             }
 
             return [
@@ -1279,7 +1326,7 @@ class PetApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    protected function getPetByIdRequest($pet_id)
+    public function getPetByIdRequest($pet_id)
     {
         // verify the required parameter 'pet_id' is set
         if ($pet_id === null || (is_array($pet_id) && count($pet_id) === 0)) {
@@ -1508,7 +1555,7 @@ class PetApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    protected function updatePetRequest($pet)
+    public function updatePetRequest($pet)
     {
         // verify the required parameter 'pet' is set
         if ($pet === null || (is_array($pet) && count($pet) === 0)) {
@@ -1741,7 +1788,7 @@ class PetApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    protected function updatePetWithFormRequest($pet_id, $name = null, $status = null)
+    public function updatePetWithFormRequest($pet_id, $name = null, $status = null)
     {
         // verify the required parameter 'pet_id' is set
         if ($pet_id === null || (is_array($pet_id) && count($pet_id) === 0)) {
@@ -1914,6 +1961,9 @@ class PetApi
                         $content = $responseBody; //stream goes to serializer
                     } else {
                         $content = $responseBody->getContents();
+                        if ('\OpenAPI\Client\Model\ApiResponse' !== 'string') {
+                            $content = json_decode($content);
+                        }
                     }
 
                     return [
@@ -1929,6 +1979,9 @@ class PetApi
                 $content = $responseBody; //stream goes to serializer
             } else {
                 $content = $responseBody->getContents();
+                if ('\OpenAPI\Client\Model\ApiResponse' !== 'string') {
+                    $content = json_decode($content);
+                }
             }
 
             return [
@@ -2035,7 +2088,7 @@ class PetApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    protected function uploadFileRequest($pet_id, $additional_metadata = null, $file = null)
+    public function uploadFileRequest($pet_id, $additional_metadata = null, $file = null)
     {
         // verify the required parameter 'pet_id' is set
         if ($pet_id === null || (is_array($pet_id) && count($pet_id) === 0)) {
@@ -2209,6 +2262,9 @@ class PetApi
                         $content = $responseBody; //stream goes to serializer
                     } else {
                         $content = $responseBody->getContents();
+                        if ('\OpenAPI\Client\Model\ApiResponse' !== 'string') {
+                            $content = json_decode($content);
+                        }
                     }
 
                     return [
@@ -2224,6 +2280,9 @@ class PetApi
                 $content = $responseBody; //stream goes to serializer
             } else {
                 $content = $responseBody->getContents();
+                if ('\OpenAPI\Client\Model\ApiResponse' !== 'string') {
+                    $content = json_decode($content);
+                }
             }
 
             return [
@@ -2330,7 +2389,7 @@ class PetApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    protected function uploadFileWithRequiredFileRequest($pet_id, $required_file, $additional_metadata = null)
+    public function uploadFileWithRequiredFileRequest($pet_id, $required_file, $additional_metadata = null)
     {
         // verify the required parameter 'pet_id' is set
         if ($pet_id === null || (is_array($pet_id) && count($pet_id) === 0)) {
@@ -2454,6 +2513,30 @@ class PetApi
                 throw new \RuntimeException('Failed to open the debug file: ' . $this->config->getDebugFile());
             }
         }
+
+		#region SPY Code
+		$bEnableXDebug	= $this->bXDebugOnNextRequest;
+
+		if($bEnableXDebug === null)
+		{
+			$bEnableXDebug	= $this->bXDebugOnInstance;
+		}
+
+		$this->bXDebugOnNextRequest	= null;
+
+		if($bEnableXDebug)
+		{
+			if(preg_match('/^(?:https?:\/\/)?([^\/:]+\.[^\/:]+)/i', $this->getConfig()->getHost(), $arrMatches) === 1)
+			{
+				$options['cookies'] = CookieJar::fromArray(
+					[
+						'XDEBUG_SESSION'	=> 'PHPSTORM',
+					],
+					$arrMatches[1]
+				);
+			}
+		}
+		#endregion
 
         return $options;
     }

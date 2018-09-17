@@ -18,59 +18,60 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import java.io.File;
 import javax.validation.constraints.*;
 import javax.validation.Valid;
 
 /**
- * Body1
+ * Body4
  */
 
-public class Body1   {
-  @JsonProperty("additionalMetadata")
-  private String additionalMetadata = null;
+public class Body4   {
+  @JsonProperty("param")
+  private String param = null;
 
-  @JsonProperty("file")
-  private File file = null;
+  @JsonProperty("param2")
+  private String param2 = null;
 
-  public Body1 additionalMetadata(String additionalMetadata) {
-    this.additionalMetadata = additionalMetadata;
+  public Body4 param(String param) {
+    this.param = param;
     return this;
   }
 
   /**
-   * Additional data to pass to server
-   * @return additionalMetadata
+   * field1
+   * @return param
    **/
-  @JsonProperty("additionalMetadata")
-  @ApiModelProperty(value = "Additional data to pass to server")
-  
-  public String getAdditionalMetadata() {
-    return additionalMetadata;
+  @JsonProperty("param")
+  @ApiModelProperty(required = true, value = "field1")
+    @NotNull
+
+  public String getParam() {
+    return param;
   }
 
-  public void setAdditionalMetadata(String additionalMetadata) {
-    this.additionalMetadata = additionalMetadata;
+  public void setParam(String param) {
+    this.param = param;
   }
 
-  public Body1 file(File file) {
-    this.file = file;
+  public Body4 param2(String param2) {
+    this.param2 = param2;
     return this;
   }
 
   /**
-   * file to upload
-   * @return file
+   * field2
+   * @return param2
    **/
-  @JsonProperty("file")
-  @ApiModelProperty(value = "file to upload")
-  
-  public File getFile() {
-    return file;
+  @JsonProperty("param2")
+  @ApiModelProperty(required = true, value = "field2")
+    @NotNull
+
+  public String getParam2() {
+    return param2;
   }
 
-  public void setFile(File file) {
-    this.file = file;
+  public void setParam2(String param2) {
+    this.param2 = param2;
   }
 
 
@@ -82,24 +83,24 @@ public class Body1   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    Body1 body1 = (Body1) o;
-    return Objects.equals(this.additionalMetadata, body1.additionalMetadata) &&
-        Objects.equals(this.file, body1.file);
+    Body4 body4 = (Body4) o;
+    return Objects.equals(this.param, body4.param) &&
+        Objects.equals(this.param2, body4.param2);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(additionalMetadata, file);
+    return Objects.hash(param, param2);
   }
 
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class Body1 {\n");
+    sb.append("class Body4 {\n");
     
-    sb.append("    additionalMetadata: ").append(toIndentedString(additionalMetadata)).append("\n");
-    sb.append("    file: ").append(toIndentedString(file)).append("\n");
+    sb.append("    param: ").append(toIndentedString(param)).append("\n");
+    sb.append("    param2: ").append(toIndentedString(param2)).append("\n");
     sb.append("}");
     return sb.toString();
   }
