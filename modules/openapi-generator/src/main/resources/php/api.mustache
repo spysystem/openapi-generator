@@ -20,6 +20,9 @@ namespace {{apiPackage}};
 
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
+#region SPY Code
+use GuzzleHttp\Cookie\CookieJar;
+#endregion
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\MultipartStream;
 use GuzzleHttp\Psr7\Request;
@@ -58,6 +61,32 @@ use {{invokerPackage}}\ObjectSerializer;
      * @var int Host index
      */
     protected $hostIndex;
+
+	#region SPY Code
+	protected $bXDebugOnInstance	= false;
+	protected $bXDebugOnNextRequest;
+
+	/**
+	 * @param bool $bXDebugOnInstance
+	 * @return $this
+	 */
+	public function setXDebugOnInstance(bool $bXDebugOnInstance)
+	{
+		$this->bXDebugOnInstance	= $bXDebugOnInstance;
+
+		return $this;
+	}
+
+	/**
+	 * @return $this
+	 */
+	public function setXDebugOnNextRequest()
+	{
+		$this->bXDebugOnNextRequest	= true;
+
+		return $this;
+	}
+	#endregion
 
     /**
      * @param ClientInterface $client
@@ -220,6 +249,9 @@ use {{invokerPackage}}\ObjectSerializer;
                         $content = $responseBody; //stream goes to serializer
                     } else {
                         $content = $responseBody->getContents();
+                        if ('{{dataType}}' !== 'string') {
+                            $content = json_decode($content);
+                        }
                     }
 
                     return [
@@ -239,6 +271,9 @@ use {{invokerPackage}}\ObjectSerializer;
                 $content = $responseBody; //stream goes to serializer
             } else {
                 $content = $responseBody->getContents();
+                if ('{{returnType}}' !== 'string') {
+                    $content = json_decode($content);
+                }
             }
 
             return [
@@ -406,7 +441,7 @@ use {{invokerPackage}}\ObjectSerializer;
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    protected function {{operationId}}Request({{^vendorExtensions.x-group-parameters}}{{#allParams}}${{paramName}}{{^required}} = {{#defaultValue}}{{{.}}}{{/defaultValue}}{{^defaultValue}}null{{/defaultValue}}{{/required}}{{#hasMore}}, {{/hasMore}}{{/allParams}}{{/vendorExtensions.x-group-parameters}}{{#vendorExtensions.x-group-parameters}}$associative_array{{/vendorExtensions.x-group-parameters}})
+    public function {{operationId}}Request({{^vendorExtensions.x-group-parameters}}{{#allParams}}${{paramName}}{{^required}} = {{#defaultValue}}{{{.}}}{{/defaultValue}}{{^defaultValue}}null{{/defaultValue}}{{/required}}{{#hasMore}}, {{/hasMore}}{{/allParams}}{{/vendorExtensions.x-group-parameters}}{{#vendorExtensions.x-group-parameters}}$associative_array{{/vendorExtensions.x-group-parameters}})
     {
         {{#vendorExtensions.x-group-parameters}}
         // unbox the parameters from the associative array
@@ -644,6 +679,30 @@ use {{invokerPackage}}\ObjectSerializer;
                 throw new \RuntimeException('Failed to open the debug file: ' . $this->config->getDebugFile());
             }
         }
+
+		#region SPY Code
+		$bEnableXDebug	= $this->bXDebugOnNextRequest;
+
+		if($bEnableXDebug === null)
+		{
+			$bEnableXDebug	= $this->bXDebugOnInstance;
+		}
+
+		$this->bXDebugOnNextRequest	= null;
+
+		if($bEnableXDebug)
+		{
+			if(preg_match('/^(?:https?:\/\/)?([^\/:]+\.[^\/:]+)/i', $this->getConfig()->getHost(), $arrMatches) === 1)
+			{
+				$options['cookies'] = CookieJar::fromArray(
+					[
+						'XDEBUG_SESSION'	=> 'PHPSTORM',
+					],
+					$arrMatches[1]
+				);
+			}
+		}
+		#endregion
 
         return $options;
     }

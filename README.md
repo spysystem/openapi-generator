@@ -2,11 +2,11 @@
 
 <div align="center">
 
-[Master](https://github.com/OpenAPITools/openapi-generator/tree/master) (`4.2.1`): [![Build Status](https://img.shields.io/travis/OpenAPITools/openapi-generator/master.svg?label=Integration%20Test)](https://travis-ci.org/OpenAPITools/openapi-generator)
-[![Integration Test2](https://circleci.com/gh/OpenAPITools/openapi-generator.svg?style=shield)](https://circleci.com/gh/OpenAPITools/openapi-generator)
-[![Run Status](https://api.shippable.com/projects/5af6bf74e790f4070084a115/badge?branch=master)](https://app.shippable.com/github/OpenAPITools/openapi-generator)
-[![Windows Test](https://ci.appveyor.com/api/projects/status/github/openapitools/openapi-generator?branch=master&svg=true&passingText=Windows%20Test%20-%20OK&failingText=Windows%20Test%20-%20Fails)](https://ci.appveyor.com/project/WilliamCheng/openapi-generator-wh2wu)
-[![JDK11 Build](https://cloud.drone.io/api/badges/OpenAPITools/openapi-generator/status.svg?ref=refs/heads/master)](https://cloud.drone.io/OpenAPITools/openapi-generator)
+[Master](https://github.com/spysystem/openapi-generator/tree/th-spy-master) (`4.2.1`): [![Build Status](https://img.shields.io/travis/spysystem/openapi-generator/th-spy-master.svg?label=Integration%20Test)](https://travis-ci.org/spysystem/openapi-generator)
+[![Integration Test2](https://circleci.com/gh/spysystem/openapi-generator.svg?style=shield)](https://circleci.com/gh/spysystem/openapi-generator)
+[![Run Status](https://api.shippable.com/projects/5af6bf74e790f4070084a115/badge?branch=spy-master)](https://app.shippable.com/github/spysystem/openapi-generator)
+[![Windows Test](https://ci.appveyor.com/api/projects/status/github/spysystem/openapi-generator?branch=th-spy-master&svg=true&passingText=Windows%20Test%20-%20OK&failingText=Windows%20Test%20-%20Fails)](https://ci.appveyor.com/project/WilliamCheng/openapi-generator-wh2wu)
+[![JDK11 Build](https://cloud.drone.io/api/badges/OpenAPITools/openapi-generator/status.svg?ref=refs/heads/th-spy-master)](https://cloud.drone.io/OpenAPITools/openapi-generator)
 
 [`4.3.x`](https://github.com/OpenAPITools/openapi-generator/tree/4.3.x) branch: [![Build Status](https://img.shields.io/travis/OpenAPITools/openapi-generator/4.3.x.svg?label=Integration%20Test)](https://travis-ci.org/OpenAPITools/openapi-generator)
 [![Integration Test2](https://circleci.com/gh/OpenAPITools/openapi-generator/tree/4.3.x.svg?style=shield)](https://circleci.com/gh/OpenAPITools/openapi-generator)
