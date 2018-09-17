@@ -81,7 +81,7 @@ class ObjectSerializer
                 }
             } else {
                 foreach($data as $property => $value) {
-                    $values[$property] = self::sanitizeForSerialization($value)
+                    $values[$property] = self::sanitizeForSerialization($value);
                 }
             }
             return (object)$values;
