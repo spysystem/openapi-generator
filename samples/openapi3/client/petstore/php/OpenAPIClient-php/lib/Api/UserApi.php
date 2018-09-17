@@ -30,6 +30,9 @@ namespace OpenAPI\Client\Api;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
+#region SPY Code
+use GuzzleHttp\Cookie\CookieJar;
+#endregion
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\MultipartStream;
 use GuzzleHttp\Psr7\Request;
@@ -63,6 +66,32 @@ class UserApi
      * @var HeaderSelector
      */
     protected $headerSelector;
+
+	#region SPY Code
+	protected $bXDebugOnInstance	= false;
+	protected $bXDebugOnNextRequest;
+
+	/**
+	 * @param bool $bXDebugOnInstance
+	 * @return $this
+	 */
+	public function setXDebugOnInstance(bool $bXDebugOnInstance)
+	{
+		$this->bXDebugOnInstance	= $bXDebugOnInstance;
+
+		return $this;
+	}
+
+	/**
+	 * @return $this
+	 */
+	public function setXDebugOnNextRequest()
+	{
+		$this->bXDebugOnNextRequest	= true;
+
+		return $this;
+	}
+	#endregion
 
     /**
      * @param ClientInterface $client
@@ -221,7 +250,7 @@ class UserApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    protected function createUserRequest($user)
+    public function createUserRequest($user)
     {
         // verify the required parameter 'user' is set
         if ($user === null || (is_array($user) && count($user) === 0)) {
@@ -259,10 +288,10 @@ class UserApi
         // for model (json/xml)
         if (isset($_tempBody)) {
             // $_tempBody is the method argument, if present
-            $httpBody = $_tempBody;
-            // \stdClass has no __toString(), so we should encode it manually
-            if ($httpBody instanceof \stdClass && $headers['Content-Type'] === 'application/json') {
-                $httpBody = \GuzzleHttp\json_encode($httpBody);
+            if($headers['Content-Type'] !== 'application/json') {
+                $httpBody = $_tempBody;
+            } else {
+                $httpBody = \GuzzleHttp\json_encode(ObjectSerializer::sanitizeForSerialization($_tempBody));
             }
         } elseif (count($formParams) > 0) {
             if ($multipart) {
@@ -440,7 +469,7 @@ class UserApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    protected function createUsersWithArrayInputRequest($user)
+    public function createUsersWithArrayInputRequest($user)
     {
         // verify the required parameter 'user' is set
         if ($user === null || (is_array($user) && count($user) === 0)) {
@@ -478,10 +507,10 @@ class UserApi
         // for model (json/xml)
         if (isset($_tempBody)) {
             // $_tempBody is the method argument, if present
-            $httpBody = $_tempBody;
-            // \stdClass has no __toString(), so we should encode it manually
-            if ($httpBody instanceof \stdClass && $headers['Content-Type'] === 'application/json') {
-                $httpBody = \GuzzleHttp\json_encode($httpBody);
+            if($headers['Content-Type'] !== 'application/json') {
+                $httpBody = $_tempBody;
+            } else {
+                $httpBody = \GuzzleHttp\json_encode(ObjectSerializer::sanitizeForSerialization($_tempBody));
             }
         } elseif (count($formParams) > 0) {
             if ($multipart) {
@@ -659,7 +688,7 @@ class UserApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    protected function createUsersWithListInputRequest($user)
+    public function createUsersWithListInputRequest($user)
     {
         // verify the required parameter 'user' is set
         if ($user === null || (is_array($user) && count($user) === 0)) {
@@ -697,10 +726,10 @@ class UserApi
         // for model (json/xml)
         if (isset($_tempBody)) {
             // $_tempBody is the method argument, if present
-            $httpBody = $_tempBody;
-            // \stdClass has no __toString(), so we should encode it manually
-            if ($httpBody instanceof \stdClass && $headers['Content-Type'] === 'application/json') {
-                $httpBody = \GuzzleHttp\json_encode($httpBody);
+            if($headers['Content-Type'] !== 'application/json') {
+                $httpBody = $_tempBody;
+            } else {
+                $httpBody = \GuzzleHttp\json_encode(ObjectSerializer::sanitizeForSerialization($_tempBody));
             }
         } elseif (count($formParams) > 0) {
             if ($multipart) {
@@ -878,7 +907,7 @@ class UserApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    protected function deleteUserRequest($username)
+    public function deleteUserRequest($username)
     {
         // verify the required parameter 'username' is set
         if ($username === null || (is_array($username) && count($username) === 0)) {
@@ -921,10 +950,10 @@ class UserApi
         // for model (json/xml)
         if (isset($_tempBody)) {
             // $_tempBody is the method argument, if present
-            $httpBody = $_tempBody;
-            // \stdClass has no __toString(), so we should encode it manually
-            if ($httpBody instanceof \stdClass && $headers['Content-Type'] === 'application/json') {
-                $httpBody = \GuzzleHttp\json_encode($httpBody);
+            if($headers['Content-Type'] !== 'application/json') {
+                $httpBody = $_tempBody;
+            } else {
+                $httpBody = \GuzzleHttp\json_encode(ObjectSerializer::sanitizeForSerialization($_tempBody));
             }
         } elseif (count($formParams) > 0) {
             if ($multipart) {
@@ -1035,6 +1064,9 @@ class UserApi
                         $content = $responseBody; //stream goes to serializer
                     } else {
                         $content = $responseBody->getContents();
+                        if ('\OpenAPI\Client\Model\User' !== 'string') {
+                            $content = json_decode($content);
+                        }
                     }
 
                     return [
@@ -1050,6 +1082,9 @@ class UserApi
                 $content = $responseBody; //stream goes to serializer
             } else {
                 $content = $responseBody->getContents();
+                if ('\OpenAPI\Client\Model\User' !== 'string') {
+                    $content = json_decode($content);
+                }
             }
 
             return [
@@ -1150,7 +1185,7 @@ class UserApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    protected function getUserByNameRequest($username)
+    public function getUserByNameRequest($username)
     {
         // verify the required parameter 'username' is set
         if ($username === null || (is_array($username) && count($username) === 0)) {
@@ -1193,10 +1228,10 @@ class UserApi
         // for model (json/xml)
         if (isset($_tempBody)) {
             // $_tempBody is the method argument, if present
-            $httpBody = $_tempBody;
-            // \stdClass has no __toString(), so we should encode it manually
-            if ($httpBody instanceof \stdClass && $headers['Content-Type'] === 'application/json') {
-                $httpBody = \GuzzleHttp\json_encode($httpBody);
+            if($headers['Content-Type'] !== 'application/json') {
+                $httpBody = $_tempBody;
+            } else {
+                $httpBody = \GuzzleHttp\json_encode(ObjectSerializer::sanitizeForSerialization($_tempBody));
             }
         } elseif (count($formParams) > 0) {
             if ($multipart) {
@@ -1309,6 +1344,9 @@ class UserApi
                         $content = $responseBody; //stream goes to serializer
                     } else {
                         $content = $responseBody->getContents();
+                        if ('string' !== 'string') {
+                            $content = json_decode($content);
+                        }
                     }
 
                     return [
@@ -1324,6 +1362,9 @@ class UserApi
                 $content = $responseBody; //stream goes to serializer
             } else {
                 $content = $responseBody->getContents();
+                if ('string' !== 'string') {
+                    $content = json_decode($content);
+                }
             }
 
             return [
@@ -1427,7 +1468,7 @@ class UserApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    protected function loginUserRequest($username, $password)
+    public function loginUserRequest($username, $password)
     {
         // verify the required parameter 'username' is set
         if ($username === null || (is_array($username) && count($username) === 0)) {
@@ -1476,10 +1517,10 @@ class UserApi
         // for model (json/xml)
         if (isset($_tempBody)) {
             // $_tempBody is the method argument, if present
-            $httpBody = $_tempBody;
-            // \stdClass has no __toString(), so we should encode it manually
-            if ($httpBody instanceof \stdClass && $headers['Content-Type'] === 'application/json') {
-                $httpBody = \GuzzleHttp\json_encode($httpBody);
+            if($headers['Content-Type'] !== 'application/json') {
+                $httpBody = $_tempBody;
+            } else {
+                $httpBody = \GuzzleHttp\json_encode(ObjectSerializer::sanitizeForSerialization($_tempBody));
             }
         } elseif (count($formParams) > 0) {
             if ($multipart) {
@@ -1652,7 +1693,7 @@ class UserApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    protected function logoutUserRequest()
+    public function logoutUserRequest()
     {
 
         $resourcePath = '/user/logout';
@@ -1681,10 +1722,10 @@ class UserApi
         // for model (json/xml)
         if (isset($_tempBody)) {
             // $_tempBody is the method argument, if present
-            $httpBody = $_tempBody;
-            // \stdClass has no __toString(), so we should encode it manually
-            if ($httpBody instanceof \stdClass && $headers['Content-Type'] === 'application/json') {
-                $httpBody = \GuzzleHttp\json_encode($httpBody);
+            if($headers['Content-Type'] !== 'application/json') {
+                $httpBody = $_tempBody;
+            } else {
+                $httpBody = \GuzzleHttp\json_encode(ObjectSerializer::sanitizeForSerialization($_tempBody));
             }
         } elseif (count($formParams) > 0) {
             if ($multipart) {
@@ -1867,7 +1908,7 @@ class UserApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    protected function updateUserRequest($username, $user)
+    public function updateUserRequest($username, $user)
     {
         // verify the required parameter 'username' is set
         if ($username === null || (is_array($username) && count($username) === 0)) {
@@ -1919,10 +1960,10 @@ class UserApi
         // for model (json/xml)
         if (isset($_tempBody)) {
             // $_tempBody is the method argument, if present
-            $httpBody = $_tempBody;
-            // \stdClass has no __toString(), so we should encode it manually
-            if ($httpBody instanceof \stdClass && $headers['Content-Type'] === 'application/json') {
-                $httpBody = \GuzzleHttp\json_encode($httpBody);
+            if($headers['Content-Type'] !== 'application/json') {
+                $httpBody = $_tempBody;
+            } else {
+                $httpBody = \GuzzleHttp\json_encode(ObjectSerializer::sanitizeForSerialization($_tempBody));
             }
         } elseif (count($formParams) > 0) {
             if ($multipart) {
@@ -1981,6 +2022,25 @@ class UserApi
                 throw new \RuntimeException('Failed to open the debug file: ' . $this->config->getDebugFile());
             }
         }
+
+		#region SPY Code
+		$bEnableXDebug	= $this->bXDebugOnNextRequest ?? $this->bXDebugOnInstance;
+
+		$this->bXDebugOnNextRequest	= null;
+
+		if($bEnableXDebug)
+		{
+			if(preg_match('/^(?:https?:\/\/)?([^\/:]+\.[^\/:]+)/i', $this->getConfig()->getHost(), $arrMatches) === 1)
+			{
+				$options['cookies'] = CookieJar::fromArray(
+					[
+						'XDEBUG_SESSION'	=> 'PHPSTORM',
+					],
+					$arrMatches[1]
+				);
+			}
+		}
+		#endregion
 
         return $options;
     }

@@ -30,6 +30,9 @@ namespace OpenAPI\Client\Api;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
+#region SPY Code
+use GuzzleHttp\Cookie\CookieJar;
+#endregion
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\MultipartStream;
 use GuzzleHttp\Psr7\Request;
@@ -63,6 +66,32 @@ class StoreApi
      * @var HeaderSelector
      */
     protected $headerSelector;
+
+	#region SPY Code
+	protected $bXDebugOnInstance	= false;
+	protected $bXDebugOnNextRequest;
+
+	/**
+	 * @param bool $bXDebugOnInstance
+	 * @return $this
+	 */
+	public function setXDebugOnInstance(bool $bXDebugOnInstance)
+	{
+		$this->bXDebugOnInstance	= $bXDebugOnInstance;
+
+		return $this;
+	}
+
+	/**
+	 * @return $this
+	 */
+	public function setXDebugOnNextRequest()
+	{
+		$this->bXDebugOnNextRequest	= true;
+
+		return $this;
+	}
+	#endregion
 
     /**
      * @param ClientInterface $client
@@ -221,7 +250,7 @@ class StoreApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    protected function deleteOrderRequest($order_id)
+    public function deleteOrderRequest($order_id)
     {
         // verify the required parameter 'order_id' is set
         if ($order_id === null || (is_array($order_id) && count($order_id) === 0)) {
@@ -264,10 +293,10 @@ class StoreApi
         // for model (json/xml)
         if (isset($_tempBody)) {
             // $_tempBody is the method argument, if present
-            $httpBody = $_tempBody;
-            // \stdClass has no __toString(), so we should encode it manually
-            if ($httpBody instanceof \stdClass && $headers['Content-Type'] === 'application/json') {
-                $httpBody = \GuzzleHttp\json_encode($httpBody);
+            if($headers['Content-Type'] !== 'application/json') {
+                $httpBody = $_tempBody;
+            } else {
+                $httpBody = \GuzzleHttp\json_encode(ObjectSerializer::sanitizeForSerialization($_tempBody));
             }
         } elseif (count($formParams) > 0) {
             if ($multipart) {
@@ -376,6 +405,9 @@ class StoreApi
                         $content = $responseBody; //stream goes to serializer
                     } else {
                         $content = $responseBody->getContents();
+                        if ('map[string,int]' !== 'string') {
+                            $content = json_decode($content);
+                        }
                     }
 
                     return [
@@ -391,6 +423,9 @@ class StoreApi
                 $content = $responseBody; //stream goes to serializer
             } else {
                 $content = $responseBody->getContents();
+                if ('map[string,int]' !== 'string') {
+                    $content = json_decode($content);
+                }
             }
 
             return [
@@ -488,7 +523,7 @@ class StoreApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    protected function getInventoryRequest()
+    public function getInventoryRequest()
     {
 
         $resourcePath = '/store/inventory';
@@ -517,10 +552,10 @@ class StoreApi
         // for model (json/xml)
         if (isset($_tempBody)) {
             // $_tempBody is the method argument, if present
-            $httpBody = $_tempBody;
-            // \stdClass has no __toString(), so we should encode it manually
-            if ($httpBody instanceof \stdClass && $headers['Content-Type'] === 'application/json') {
-                $httpBody = \GuzzleHttp\json_encode($httpBody);
+            if($headers['Content-Type'] !== 'application/json') {
+                $httpBody = $_tempBody;
+            } else {
+                $httpBody = \GuzzleHttp\json_encode(ObjectSerializer::sanitizeForSerialization($_tempBody));
             }
         } elseif (count($formParams) > 0) {
             if ($multipart) {
@@ -636,6 +671,9 @@ class StoreApi
                         $content = $responseBody; //stream goes to serializer
                     } else {
                         $content = $responseBody->getContents();
+                        if ('\OpenAPI\Client\Model\Order' !== 'string') {
+                            $content = json_decode($content);
+                        }
                     }
 
                     return [
@@ -651,6 +689,9 @@ class StoreApi
                 $content = $responseBody; //stream goes to serializer
             } else {
                 $content = $responseBody->getContents();
+                if ('\OpenAPI\Client\Model\Order' !== 'string') {
+                    $content = json_decode($content);
+                }
             }
 
             return [
@@ -751,7 +792,7 @@ class StoreApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    protected function getOrderByIdRequest($order_id)
+    public function getOrderByIdRequest($order_id)
     {
         // verify the required parameter 'order_id' is set
         if ($order_id === null || (is_array($order_id) && count($order_id) === 0)) {
@@ -801,10 +842,10 @@ class StoreApi
         // for model (json/xml)
         if (isset($_tempBody)) {
             // $_tempBody is the method argument, if present
-            $httpBody = $_tempBody;
-            // \stdClass has no __toString(), so we should encode it manually
-            if ($httpBody instanceof \stdClass && $headers['Content-Type'] === 'application/json') {
-                $httpBody = \GuzzleHttp\json_encode($httpBody);
+            if($headers['Content-Type'] !== 'application/json') {
+                $httpBody = $_tempBody;
+            } else {
+                $httpBody = \GuzzleHttp\json_encode(ObjectSerializer::sanitizeForSerialization($_tempBody));
             }
         } elseif (count($formParams) > 0) {
             if ($multipart) {
@@ -915,6 +956,9 @@ class StoreApi
                         $content = $responseBody; //stream goes to serializer
                     } else {
                         $content = $responseBody->getContents();
+                        if ('\OpenAPI\Client\Model\Order' !== 'string') {
+                            $content = json_decode($content);
+                        }
                     }
 
                     return [
@@ -930,6 +974,9 @@ class StoreApi
                 $content = $responseBody; //stream goes to serializer
             } else {
                 $content = $responseBody->getContents();
+                if ('\OpenAPI\Client\Model\Order' !== 'string') {
+                    $content = json_decode($content);
+                }
             }
 
             return [
@@ -1030,7 +1077,7 @@ class StoreApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    protected function placeOrderRequest($order)
+    public function placeOrderRequest($order)
     {
         // verify the required parameter 'order' is set
         if ($order === null || (is_array($order) && count($order) === 0)) {
@@ -1068,10 +1115,10 @@ class StoreApi
         // for model (json/xml)
         if (isset($_tempBody)) {
             // $_tempBody is the method argument, if present
-            $httpBody = $_tempBody;
-            // \stdClass has no __toString(), so we should encode it manually
-            if ($httpBody instanceof \stdClass && $headers['Content-Type'] === 'application/json') {
-                $httpBody = \GuzzleHttp\json_encode($httpBody);
+            if($headers['Content-Type'] !== 'application/json') {
+                $httpBody = $_tempBody;
+            } else {
+                $httpBody = \GuzzleHttp\json_encode(ObjectSerializer::sanitizeForSerialization($_tempBody));
             }
         } elseif (count($formParams) > 0) {
             if ($multipart) {
@@ -1130,6 +1177,25 @@ class StoreApi
                 throw new \RuntimeException('Failed to open the debug file: ' . $this->config->getDebugFile());
             }
         }
+
+		#region SPY Code
+		$bEnableXDebug	= $this->bXDebugOnNextRequest ?? $this->bXDebugOnInstance;
+
+		$this->bXDebugOnNextRequest	= null;
+
+		if($bEnableXDebug)
+		{
+			if(preg_match('/^(?:https?:\/\/)?([^\/:]+\.[^\/:]+)/i', $this->getConfig()->getHost(), $arrMatches) === 1)
+			{
+				$options['cookies'] = CookieJar::fromArray(
+					[
+						'XDEBUG_SESSION'	=> 'PHPSTORM',
+					],
+					$arrMatches[1]
+				);
+			}
+		}
+		#endregion
 
         return $options;
     }

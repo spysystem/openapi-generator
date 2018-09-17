@@ -30,6 +30,9 @@ namespace OpenAPI\Client\Api;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
+#region SPY Code
+use GuzzleHttp\Cookie\CookieJar;
+#endregion
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\MultipartStream;
 use GuzzleHttp\Psr7\Request;
@@ -63,6 +66,32 @@ class AnotherFakeApi
      * @var HeaderSelector
      */
     protected $headerSelector;
+
+	#region SPY Code
+	protected $bXDebugOnInstance	= false;
+	protected $bXDebugOnNextRequest;
+
+	/**
+	 * @param bool $bXDebugOnInstance
+	 * @return $this
+	 */
+	public function setXDebugOnInstance(bool $bXDebugOnInstance)
+	{
+		$this->bXDebugOnInstance	= $bXDebugOnInstance;
+
+		return $this;
+	}
+
+	/**
+	 * @return $this
+	 */
+	public function setXDebugOnNextRequest()
+	{
+		$this->bXDebugOnNextRequest	= true;
+
+		return $this;
+	}
+	#endregion
 
     /**
      * @param ClientInterface $client
@@ -154,6 +183,9 @@ class AnotherFakeApi
                         $content = $responseBody; //stream goes to serializer
                     } else {
                         $content = $responseBody->getContents();
+                        if ('\OpenAPI\Client\Model\Client' !== 'string') {
+                            $content = json_decode($content);
+                        }
                     }
 
                     return [
@@ -169,6 +201,9 @@ class AnotherFakeApi
                 $content = $responseBody; //stream goes to serializer
             } else {
                 $content = $responseBody->getContents();
+                if ('\OpenAPI\Client\Model\Client' !== 'string') {
+                    $content = json_decode($content);
+                }
             }
 
             return [
@@ -269,7 +304,7 @@ class AnotherFakeApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    protected function call123TestSpecialTagsRequest($client)
+    public function call123TestSpecialTagsRequest($client)
     {
         // verify the required parameter 'client' is set
         if ($client === null || (is_array($client) && count($client) === 0)) {
@@ -307,10 +342,10 @@ class AnotherFakeApi
         // for model (json/xml)
         if (isset($_tempBody)) {
             // $_tempBody is the method argument, if present
-            $httpBody = $_tempBody;
-            // \stdClass has no __toString(), so we should encode it manually
-            if ($httpBody instanceof \stdClass && $headers['Content-Type'] === 'application/json') {
-                $httpBody = \GuzzleHttp\json_encode($httpBody);
+            if($headers['Content-Type'] !== 'application/json') {
+                $httpBody = $_tempBody;
+            } else {
+                $httpBody = \GuzzleHttp\json_encode(ObjectSerializer::sanitizeForSerialization($_tempBody));
             }
         } elseif (count($formParams) > 0) {
             if ($multipart) {
@@ -369,6 +404,25 @@ class AnotherFakeApi
                 throw new \RuntimeException('Failed to open the debug file: ' . $this->config->getDebugFile());
             }
         }
+
+		#region SPY Code
+		$bEnableXDebug	= $this->bXDebugOnNextRequest ?? $this->bXDebugOnInstance;
+
+		$this->bXDebugOnNextRequest	= null;
+
+		if($bEnableXDebug)
+		{
+			if(preg_match('/^(?:https?:\/\/)?([^\/:]+\.[^\/:]+)/i', $this->getConfig()->getHost(), $arrMatches) === 1)
+			{
+				$options['cookies'] = CookieJar::fromArray(
+					[
+						'XDEBUG_SESSION'	=> 'PHPSTORM',
+					],
+					$arrMatches[1]
+				);
+			}
+		}
+		#endregion
 
         return $options;
     }

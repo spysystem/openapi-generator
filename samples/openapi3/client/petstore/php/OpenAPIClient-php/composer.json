@@ -17,6 +17,10 @@
             "homepage": "https://openapi-generator.tech"
         }
     ],
+    "repositories": [
+        {"type": "composer", "url": "https://repo.packagist.com/spysystem/"},
+        {"packagist.org": false}
+    ],
     "require": {
         "php": ">=5.6",
         "ext-curl": "*",

@@ -30,6 +30,9 @@ namespace OpenAPI\Client\Api;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
+#region SPY Code
+use GuzzleHttp\Cookie\CookieJar;
+#endregion
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\MultipartStream;
 use GuzzleHttp\Psr7\Request;
@@ -63,6 +66,32 @@ class FakeApi
      * @var HeaderSelector
      */
     protected $headerSelector;
+
+	#region SPY Code
+	protected $bXDebugOnInstance	= false;
+	protected $bXDebugOnNextRequest;
+
+	/**
+	 * @param bool $bXDebugOnInstance
+	 * @return $this
+	 */
+	public function setXDebugOnInstance(bool $bXDebugOnInstance)
+	{
+		$this->bXDebugOnInstance	= $bXDebugOnInstance;
+
+		return $this;
+	}
+
+	/**
+	 * @return $this
+	 */
+	public function setXDebugOnNextRequest()
+	{
+		$this->bXDebugOnNextRequest	= true;
+
+		return $this;
+	}
+	#endregion
 
     /**
      * @param ClientInterface $client
@@ -150,6 +179,9 @@ class FakeApi
                         $content = $responseBody; //stream goes to serializer
                     } else {
                         $content = $responseBody->getContents();
+                        if ('bool' !== 'string') {
+                            $content = json_decode($content);
+                        }
                     }
 
                     return [
@@ -165,6 +197,9 @@ class FakeApi
                 $content = $responseBody; //stream goes to serializer
             } else {
                 $content = $responseBody->getContents();
+                if ('bool' !== 'string') {
+                    $content = json_decode($content);
+                }
             }
 
             return [
@@ -265,7 +300,7 @@ class FakeApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    protected function fakeOuterBooleanSerializeRequest($body = null)
+    public function fakeOuterBooleanSerializeRequest($body = null)
     {
 
         $resourcePath = '/fake/outer/boolean';
@@ -297,10 +332,10 @@ class FakeApi
         // for model (json/xml)
         if (isset($_tempBody)) {
             // $_tempBody is the method argument, if present
-            $httpBody = $_tempBody;
-            // \stdClass has no __toString(), so we should encode it manually
-            if ($httpBody instanceof \stdClass && $headers['Content-Type'] === 'application/json') {
-                $httpBody = \GuzzleHttp\json_encode($httpBody);
+            if($headers['Content-Type'] !== 'application/json') {
+                $httpBody = $_tempBody;
+            } else {
+                $httpBody = \GuzzleHttp\json_encode(ObjectSerializer::sanitizeForSerialization($_tempBody));
             }
         } elseif (count($formParams) > 0) {
             if ($multipart) {
@@ -407,6 +442,9 @@ class FakeApi
                         $content = $responseBody; //stream goes to serializer
                     } else {
                         $content = $responseBody->getContents();
+                        if ('\OpenAPI\Client\Model\OuterComposite' !== 'string') {
+                            $content = json_decode($content);
+                        }
                     }
 
                     return [
@@ -422,6 +460,9 @@ class FakeApi
                 $content = $responseBody; //stream goes to serializer
             } else {
                 $content = $responseBody->getContents();
+                if ('\OpenAPI\Client\Model\OuterComposite' !== 'string') {
+                    $content = json_decode($content);
+                }
             }
 
             return [
@@ -522,7 +563,7 @@ class FakeApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    protected function fakeOuterCompositeSerializeRequest($outer_composite = null)
+    public function fakeOuterCompositeSerializeRequest($outer_composite = null)
     {
 
         $resourcePath = '/fake/outer/composite';
@@ -554,10 +595,10 @@ class FakeApi
         // for model (json/xml)
         if (isset($_tempBody)) {
             // $_tempBody is the method argument, if present
-            $httpBody = $_tempBody;
-            // \stdClass has no __toString(), so we should encode it manually
-            if ($httpBody instanceof \stdClass && $headers['Content-Type'] === 'application/json') {
-                $httpBody = \GuzzleHttp\json_encode($httpBody);
+            if($headers['Content-Type'] !== 'application/json') {
+                $httpBody = $_tempBody;
+            } else {
+                $httpBody = \GuzzleHttp\json_encode(ObjectSerializer::sanitizeForSerialization($_tempBody));
             }
         } elseif (count($formParams) > 0) {
             if ($multipart) {
@@ -664,6 +705,9 @@ class FakeApi
                         $content = $responseBody; //stream goes to serializer
                     } else {
                         $content = $responseBody->getContents();
+                        if ('float' !== 'string') {
+                            $content = json_decode($content);
+                        }
                     }
 
                     return [
@@ -679,6 +723,9 @@ class FakeApi
                 $content = $responseBody; //stream goes to serializer
             } else {
                 $content = $responseBody->getContents();
+                if ('float' !== 'string') {
+                    $content = json_decode($content);
+                }
             }
 
             return [
@@ -779,7 +826,7 @@ class FakeApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    protected function fakeOuterNumberSerializeRequest($body = null)
+    public function fakeOuterNumberSerializeRequest($body = null)
     {
 
         $resourcePath = '/fake/outer/number';
@@ -811,10 +858,10 @@ class FakeApi
         // for model (json/xml)
         if (isset($_tempBody)) {
             // $_tempBody is the method argument, if present
-            $httpBody = $_tempBody;
-            // \stdClass has no __toString(), so we should encode it manually
-            if ($httpBody instanceof \stdClass && $headers['Content-Type'] === 'application/json') {
-                $httpBody = \GuzzleHttp\json_encode($httpBody);
+            if($headers['Content-Type'] !== 'application/json') {
+                $httpBody = $_tempBody;
+            } else {
+                $httpBody = \GuzzleHttp\json_encode(ObjectSerializer::sanitizeForSerialization($_tempBody));
             }
         } elseif (count($formParams) > 0) {
             if ($multipart) {
@@ -921,6 +968,9 @@ class FakeApi
                         $content = $responseBody; //stream goes to serializer
                     } else {
                         $content = $responseBody->getContents();
+                        if ('string' !== 'string') {
+                            $content = json_decode($content);
+                        }
                     }
 
                     return [
@@ -936,6 +986,9 @@ class FakeApi
                 $content = $responseBody; //stream goes to serializer
             } else {
                 $content = $responseBody->getContents();
+                if ('string' !== 'string') {
+                    $content = json_decode($content);
+                }
             }
 
             return [
@@ -1036,7 +1089,7 @@ class FakeApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    protected function fakeOuterStringSerializeRequest($body = null)
+    public function fakeOuterStringSerializeRequest($body = null)
     {
 
         $resourcePath = '/fake/outer/string';
@@ -1068,10 +1121,10 @@ class FakeApi
         // for model (json/xml)
         if (isset($_tempBody)) {
             // $_tempBody is the method argument, if present
-            $httpBody = $_tempBody;
-            // \stdClass has no __toString(), so we should encode it manually
-            if ($httpBody instanceof \stdClass && $headers['Content-Type'] === 'application/json') {
-                $httpBody = \GuzzleHttp\json_encode($httpBody);
+            if($headers['Content-Type'] !== 'application/json') {
+                $httpBody = $_tempBody;
+            } else {
+                $httpBody = \GuzzleHttp\json_encode(ObjectSerializer::sanitizeForSerialization($_tempBody));
             }
         } elseif (count($formParams) > 0) {
             if ($multipart) {
@@ -1245,7 +1298,7 @@ class FakeApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    protected function testBodyWithFileSchemaRequest($file_schema_test_class)
+    public function testBodyWithFileSchemaRequest($file_schema_test_class)
     {
         // verify the required parameter 'file_schema_test_class' is set
         if ($file_schema_test_class === null || (is_array($file_schema_test_class) && count($file_schema_test_class) === 0)) {
@@ -1283,10 +1336,10 @@ class FakeApi
         // for model (json/xml)
         if (isset($_tempBody)) {
             // $_tempBody is the method argument, if present
-            $httpBody = $_tempBody;
-            // \stdClass has no __toString(), so we should encode it manually
-            if ($httpBody instanceof \stdClass && $headers['Content-Type'] === 'application/json') {
-                $httpBody = \GuzzleHttp\json_encode($httpBody);
+            if($headers['Content-Type'] !== 'application/json') {
+                $httpBody = $_tempBody;
+            } else {
+                $httpBody = \GuzzleHttp\json_encode(ObjectSerializer::sanitizeForSerialization($_tempBody));
             }
         } elseif (count($formParams) > 0) {
             if ($multipart) {
@@ -1465,7 +1518,7 @@ class FakeApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    protected function testBodyWithQueryParamsRequest($query, $user)
+    public function testBodyWithQueryParamsRequest($query, $user)
     {
         // verify the required parameter 'query' is set
         if ($query === null || (is_array($query) && count($query) === 0)) {
@@ -1513,10 +1566,10 @@ class FakeApi
         // for model (json/xml)
         if (isset($_tempBody)) {
             // $_tempBody is the method argument, if present
-            $httpBody = $_tempBody;
-            // \stdClass has no __toString(), so we should encode it manually
-            if ($httpBody instanceof \stdClass && $headers['Content-Type'] === 'application/json') {
-                $httpBody = \GuzzleHttp\json_encode($httpBody);
+            if($headers['Content-Type'] !== 'application/json') {
+                $httpBody = $_tempBody;
+            } else {
+                $httpBody = \GuzzleHttp\json_encode(ObjectSerializer::sanitizeForSerialization($_tempBody));
             }
         } elseif (count($formParams) > 0) {
             if ($multipart) {
@@ -1627,6 +1680,9 @@ class FakeApi
                         $content = $responseBody; //stream goes to serializer
                     } else {
                         $content = $responseBody->getContents();
+                        if ('\OpenAPI\Client\Model\Client' !== 'string') {
+                            $content = json_decode($content);
+                        }
                     }
 
                     return [
@@ -1642,6 +1698,9 @@ class FakeApi
                 $content = $responseBody; //stream goes to serializer
             } else {
                 $content = $responseBody->getContents();
+                if ('\OpenAPI\Client\Model\Client' !== 'string') {
+                    $content = json_decode($content);
+                }
             }
 
             return [
@@ -1742,7 +1801,7 @@ class FakeApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    protected function testClientModelRequest($client)
+    public function testClientModelRequest($client)
     {
         // verify the required parameter 'client' is set
         if ($client === null || (is_array($client) && count($client) === 0)) {
@@ -1780,10 +1839,10 @@ class FakeApi
         // for model (json/xml)
         if (isset($_tempBody)) {
             // $_tempBody is the method argument, if present
-            $httpBody = $_tempBody;
-            // \stdClass has no __toString(), so we should encode it manually
-            if ($httpBody instanceof \stdClass && $headers['Content-Type'] === 'application/json') {
-                $httpBody = \GuzzleHttp\json_encode($httpBody);
+            if($headers['Content-Type'] !== 'application/json') {
+                $httpBody = $_tempBody;
+            } else {
+                $httpBody = \GuzzleHttp\json_encode(ObjectSerializer::sanitizeForSerialization($_tempBody));
             }
         } elseif (count($formParams) > 0) {
             if ($multipart) {
@@ -2026,7 +2085,7 @@ class FakeApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    protected function testEndpointParametersRequest($number, $double, $pattern_without_delimiter, $byte, $integer = null, $int32 = null, $int64 = null, $float = null, $string = null, $binary = null, $date = null, $date_time = null, $password = null, $callback = null)
+    public function testEndpointParametersRequest($number, $double, $pattern_without_delimiter, $byte, $integer = null, $int32 = null, $int64 = null, $float = null, $string = null, $binary = null, $date = null, $date_time = null, $password = null, $callback = null)
     {
         // verify the required parameter 'number' is set
         if ($number === null || (is_array($number) && count($number) === 0)) {
@@ -2183,10 +2242,10 @@ class FakeApi
         // for model (json/xml)
         if (isset($_tempBody)) {
             // $_tempBody is the method argument, if present
-            $httpBody = $_tempBody;
-            // \stdClass has no __toString(), so we should encode it manually
-            if ($httpBody instanceof \stdClass && $headers['Content-Type'] === 'application/json') {
-                $httpBody = \GuzzleHttp\json_encode($httpBody);
+            if($headers['Content-Type'] !== 'application/json') {
+                $httpBody = $_tempBody;
+            } else {
+                $httpBody = \GuzzleHttp\json_encode(ObjectSerializer::sanitizeForSerialization($_tempBody));
             }
         } elseif (count($formParams) > 0) {
             if ($multipart) {
@@ -2403,7 +2462,7 @@ class FakeApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    protected function testEnumParametersRequest($enum_header_string_array = null, $enum_header_string = '-efg', $enum_query_string_array = null, $enum_query_string = '-efg', $enum_query_integer = null, $enum_query_double = null, $enum_form_string_array = '$', $enum_form_string = '-efg')
+    public function testEnumParametersRequest($enum_header_string_array = null, $enum_header_string = '-efg', $enum_query_string_array = null, $enum_query_string = '-efg', $enum_query_integer = null, $enum_query_double = null, $enum_form_string_array = '$', $enum_form_string = '-efg')
     {
 
         $resourcePath = '/fake';
@@ -2470,10 +2529,10 @@ class FakeApi
         // for model (json/xml)
         if (isset($_tempBody)) {
             // $_tempBody is the method argument, if present
-            $httpBody = $_tempBody;
-            // \stdClass has no __toString(), so we should encode it manually
-            if ($httpBody instanceof \stdClass && $headers['Content-Type'] === 'application/json') {
-                $httpBody = \GuzzleHttp\json_encode($httpBody);
+            if($headers['Content-Type'] !== 'application/json') {
+                $httpBody = $_tempBody;
+            } else {
+                $httpBody = \GuzzleHttp\json_encode(ObjectSerializer::sanitizeForSerialization($_tempBody));
             }
         } elseif (count($formParams) > 0) {
             if ($multipart) {
@@ -2651,7 +2710,7 @@ class FakeApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    protected function testInlineAdditionalPropertiesRequest($request_body)
+    public function testInlineAdditionalPropertiesRequest($request_body)
     {
         // verify the required parameter 'request_body' is set
         if ($request_body === null || (is_array($request_body) && count($request_body) === 0)) {
@@ -2689,10 +2748,10 @@ class FakeApi
         // for model (json/xml)
         if (isset($_tempBody)) {
             // $_tempBody is the method argument, if present
-            $httpBody = $_tempBody;
-            // \stdClass has no __toString(), so we should encode it manually
-            if ($httpBody instanceof \stdClass && $headers['Content-Type'] === 'application/json') {
-                $httpBody = \GuzzleHttp\json_encode($httpBody);
+            if($headers['Content-Type'] !== 'application/json') {
+                $httpBody = $_tempBody;
+            } else {
+                $httpBody = \GuzzleHttp\json_encode(ObjectSerializer::sanitizeForSerialization($_tempBody));
             }
         } elseif (count($formParams) > 0) {
             if ($multipart) {
@@ -2875,7 +2934,7 @@ class FakeApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    protected function testJsonFormDataRequest($param, $param2)
+    public function testJsonFormDataRequest($param, $param2)
     {
         // verify the required parameter 'param' is set
         if ($param === null || (is_array($param) && count($param) === 0)) {
@@ -2924,10 +2983,10 @@ class FakeApi
         // for model (json/xml)
         if (isset($_tempBody)) {
             // $_tempBody is the method argument, if present
-            $httpBody = $_tempBody;
-            // \stdClass has no __toString(), so we should encode it manually
-            if ($httpBody instanceof \stdClass && $headers['Content-Type'] === 'application/json') {
-                $httpBody = \GuzzleHttp\json_encode($httpBody);
+            if($headers['Content-Type'] !== 'application/json') {
+                $httpBody = $_tempBody;
+            } else {
+                $httpBody = \GuzzleHttp\json_encode(ObjectSerializer::sanitizeForSerialization($_tempBody));
             }
         } elseif (count($formParams) > 0) {
             if ($multipart) {
@@ -2986,6 +3045,25 @@ class FakeApi
                 throw new \RuntimeException('Failed to open the debug file: ' . $this->config->getDebugFile());
             }
         }
+
+		#region SPY Code
+		$bEnableXDebug	= $this->bXDebugOnNextRequest ?? $this->bXDebugOnInstance;
+
+		$this->bXDebugOnNextRequest	= null;
+
+		if($bEnableXDebug)
+		{
+			if(preg_match('/^(?:https?:\/\/)?([^\/:]+\.[^\/:]+)/i', $this->getConfig()->getHost(), $arrMatches) === 1)
+			{
+				$options['cookies'] = CookieJar::fromArray(
+					[
+						'XDEBUG_SESSION'	=> 'PHPSTORM',
+					],
+					$arrMatches[1]
+				);
+			}
+		}
+		#endregion
 
         return $options;
     }
