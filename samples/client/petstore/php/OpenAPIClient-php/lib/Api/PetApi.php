@@ -2515,7 +2515,12 @@ class PetApi
         }
 
 		#region SPY Code
-		$bEnableXDebug	= $this->bXDebugOnNextRequest ?? $this->bXDebugOnInstance;
+		$bEnableXDebug	= $this->bXDebugOnNextRequest;
+
+		if($bEnableXDebug === null)
+		{
+			$bEnableXDebug	= $this->bXDebugOnInstance;
+		}
 
 		$this->bXDebugOnNextRequest	= null;
 
