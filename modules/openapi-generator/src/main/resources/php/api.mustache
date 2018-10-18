@@ -81,6 +81,16 @@ use {{invokerPackage}}\ObjectSerializer;
 
 		return $this;
 	}
+
+	/**
+	 * Gets the OpenAPI Spec Version
+	 *
+	 * @return string
+	 */
+	public static function getSpecVersion()
+	{
+		return '{{{version}}}';
+	}
 	#endregion
 
     /**
@@ -565,6 +575,9 @@ use {{invokerPackage}}\ObjectSerializer;
         }
 
 		#region SPY Code
+		$options[RequestOptions::HEADERS]	= [
+			'X-OpenAPISpecVersion'	=> '{{{version}}}',
+		];
 		$bEnableXDebug	= $this->bXDebugOnNextRequest;
 
 		if($bEnableXDebug === null)
