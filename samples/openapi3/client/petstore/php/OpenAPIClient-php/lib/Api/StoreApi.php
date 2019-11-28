@@ -305,6 +305,7 @@ class StoreApi
         $multipart = false;
 
 
+
         // path params
         if ($order_id !== null) {
             $resourcePath = str_replace(
@@ -570,6 +571,7 @@ class StoreApi
         $headerParams = [];
         $httpBody = '';
         $multipart = false;
+
 
 
 
@@ -854,6 +856,7 @@ class StoreApi
         $multipart = false;
 
 
+
         // path params
         if ($order_id !== null) {
             $resourcePath = str_replace(
@@ -1130,6 +1133,7 @@ class StoreApi
         $headerParams = [];
         $httpBody = '';
         $multipart = false;
+
 
 
 

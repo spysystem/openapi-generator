@@ -360,6 +360,7 @@ class AnotherFakeApi
 
 
 
+
         // body params
         $_tempBody = null;
         if (isset($client)) {
