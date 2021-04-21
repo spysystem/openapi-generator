@@ -46,6 +46,10 @@ class OuterComposite implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
+    public const ATTRIBUTE_MY_NUMBER = 'my_number';
+    public const ATTRIBUTE_MY_STRING = 'my_string';
+    public const ATTRIBUTE_MY_BOOLEAN = 'my_boolean';
+
     /**
       * The original name of the model.
       *
@@ -78,6 +82,24 @@ class OuterComposite implements ModelInterface, ArrayAccess, \JsonSerializable
     ];
 
     /**
+      * Array of nullable properties. Used for (de)serialization
+      *
+      * @var boolean[]
+      */
+    protected static $openAPINullables = [
+        'my_number' => false,
+		'my_string' => false,
+		'my_boolean' => false
+    ];
+
+    /**
+      * If a nullable field gets set to null, insert it here
+      *
+      * @var boolean[]
+      */
+    protected $openAPINullablesSetToNull = [];
+
+    /**
      * Array of property to type mappings. Used for (de)serialization
      *
      * @return array
@@ -95,6 +117,60 @@ class OuterComposite implements ModelInterface, ArrayAccess, \JsonSerializable
     public static function openAPIFormats()
     {
         return self::$openAPIFormats;
+    }
+
+    /**
+     * Array of property to nullable mappings. Used for (de)serialization
+     *
+     * @return array
+     */
+    public static function openAPINullables()
+    {
+        return self::$openAPINullables;
+    }
+
+    /**
+     * Array of nullable field names deliberately set to null
+     *
+     * @return array
+     */
+    public function getOpenAPINullablesSetToNull()
+    {
+        return $this->openAPINullablesSetToNull;
+    }
+
+    public function setOpenAPINullablesSetToNull($nullablesSetToNull)
+    {
+        $this->openAPINullablesSetToNull=$nullablesSetToNull;
+
+        return $this;
+    }
+
+    /**
+     * Checks if a property is nullable
+     *
+     * @return bool
+     */
+    public static function isNullable(string $property): bool
+    {
+        if (isset(self::$openAPINullables[$property])) {
+            return self::$openAPINullables[$property];
+        }
+
+        return false;
+    }
+
+    /**
+     * Checks if a nullable property is set to null.
+     *
+     * @return bool
+     */
+    public function isNullableSetToNull(string $property): bool
+    {
+        if (in_array($property, $this->getOpenAPINullablesSetToNull())) {
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -188,9 +264,20 @@ class OuterComposite implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     public function __construct(array $data = null)
     {
-        $this->container['my_number'] = $data['my_number'] ?? null;
-        $this->container['my_string'] = $data['my_string'] ?? null;
-        $this->container['my_boolean'] = $data['my_boolean'] ?? null;
+        $this->setIfExists('my_number', $data, null);
+        $this->setIfExists('my_string', $data, null);
+        $this->setIfExists('my_boolean', $data, null);
+    }
+
+    public function setIfExists(string $variableName, $fields, $defaultValue)
+    {
+        if (is_array($fields) && array_key_exists($variableName, $fields) && is_null($fields[$variableName]) && self::isNullable($variableName)) {
+            array_push($this->openAPINullablesSetToNull, $variableName);
+        }
+
+        $this->container[$variableName] = isset($fields[$variableName]) ? $fields[$variableName] : $defaultValue;
+
+        return $this;
     }
 
     /**
@@ -236,6 +323,11 @@ class OuterComposite implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     public function setMyNumber($my_number)
     {
+
+        if (is_null($my_number)) {
+            throw new \InvalidArgumentException('non-nullable my_number cannot be null');
+        }
+
         $this->container['my_number'] = $my_number;
 
         return $this;
@@ -260,6 +352,11 @@ class OuterComposite implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     public function setMyString($my_string)
     {
+
+        if (is_null($my_string)) {
+            throw new \InvalidArgumentException('non-nullable my_string cannot be null');
+        }
+
         $this->container['my_string'] = $my_string;
 
         return $this;
@@ -284,6 +381,11 @@ class OuterComposite implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     public function setMyBoolean($my_boolean)
     {
+
+        if (is_null($my_boolean)) {
+            throw new \InvalidArgumentException('non-nullable my_boolean cannot be null');
+        }
+
         $this->container['my_boolean'] = $my_boolean;
 
         return $this;
@@ -362,7 +464,7 @@ class OuterComposite implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     public function __toString()
     {
-        return json_encode(
+        return (string)json_encode(
             ObjectSerializer::sanitizeForSerialization($this),
             JSON_PRETTY_PRINT
         );

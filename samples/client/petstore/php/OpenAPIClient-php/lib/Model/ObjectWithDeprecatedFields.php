@@ -46,6 +46,11 @@ class ObjectWithDeprecatedFields implements ModelInterface, ArrayAccess, \JsonSe
 {
     public const DISCRIMINATOR = null;
 
+    public const ATTRIBUTE_UUID = 'uuid';
+    public const ATTRIBUTE_ID = 'id';
+    public const ATTRIBUTE_DEPRECATED_REF = 'deprecated_ref';
+    public const ATTRIBUTE_BARS = 'bars';
+
     /**
       * The original name of the model.
       *
@@ -80,6 +85,25 @@ class ObjectWithDeprecatedFields implements ModelInterface, ArrayAccess, \JsonSe
     ];
 
     /**
+      * Array of nullable properties. Used for (de)serialization
+      *
+      * @var boolean[]
+      */
+    protected static $openAPINullables = [
+        'uuid' => false,
+		'id' => false,
+		'deprecated_ref' => false,
+		'bars' => false
+    ];
+
+    /**
+      * If a nullable field gets set to null, insert it here
+      *
+      * @var boolean[]
+      */
+    protected $openAPINullablesSetToNull = [];
+
+    /**
      * Array of property to type mappings. Used for (de)serialization
      *
      * @return array
@@ -97,6 +121,60 @@ class ObjectWithDeprecatedFields implements ModelInterface, ArrayAccess, \JsonSe
     public static function openAPIFormats()
     {
         return self::$openAPIFormats;
+    }
+
+    /**
+     * Array of property to nullable mappings. Used for (de)serialization
+     *
+     * @return array
+     */
+    public static function openAPINullables()
+    {
+        return self::$openAPINullables;
+    }
+
+    /**
+     * Array of nullable field names deliberately set to null
+     *
+     * @return array
+     */
+    public function getOpenAPINullablesSetToNull()
+    {
+        return $this->openAPINullablesSetToNull;
+    }
+
+    public function setOpenAPINullablesSetToNull($nullablesSetToNull)
+    {
+        $this->openAPINullablesSetToNull=$nullablesSetToNull;
+
+        return $this;
+    }
+
+    /**
+     * Checks if a property is nullable
+     *
+     * @return bool
+     */
+    public static function isNullable(string $property): bool
+    {
+        if (isset(self::$openAPINullables[$property])) {
+            return self::$openAPINullables[$property];
+        }
+
+        return false;
+    }
+
+    /**
+     * Checks if a nullable property is set to null.
+     *
+     * @return bool
+     */
+    public function isNullableSetToNull(string $property): bool
+    {
+        if (in_array($property, $this->getOpenAPINullablesSetToNull())) {
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -193,10 +271,21 @@ class ObjectWithDeprecatedFields implements ModelInterface, ArrayAccess, \JsonSe
      */
     public function __construct(array $data = null)
     {
-        $this->container['uuid'] = $data['uuid'] ?? null;
-        $this->container['id'] = $data['id'] ?? null;
-        $this->container['deprecated_ref'] = $data['deprecated_ref'] ?? null;
-        $this->container['bars'] = $data['bars'] ?? null;
+        $this->setIfExists('uuid', $data, null);
+        $this->setIfExists('id', $data, null);
+        $this->setIfExists('deprecated_ref', $data, null);
+        $this->setIfExists('bars', $data, null);
+    }
+
+    public function setIfExists(string $variableName, $fields, $defaultValue)
+    {
+        if (is_array($fields) && array_key_exists($variableName, $fields) && is_null($fields[$variableName]) && self::isNullable($variableName)) {
+            array_push($this->openAPINullablesSetToNull, $variableName);
+        }
+
+        $this->container[$variableName] = isset($fields[$variableName]) ? $fields[$variableName] : $defaultValue;
+
+        return $this;
     }
 
     /**
@@ -242,6 +331,11 @@ class ObjectWithDeprecatedFields implements ModelInterface, ArrayAccess, \JsonSe
      */
     public function setUuid($uuid)
     {
+
+        if (is_null($uuid)) {
+            throw new \InvalidArgumentException('non-nullable uuid cannot be null');
+        }
+
         $this->container['uuid'] = $uuid;
 
         return $this;
@@ -268,6 +362,11 @@ class ObjectWithDeprecatedFields implements ModelInterface, ArrayAccess, \JsonSe
      */
     public function setId($id)
     {
+
+        if (is_null($id)) {
+            throw new \InvalidArgumentException('non-nullable id cannot be null');
+        }
+
         $this->container['id'] = $id;
 
         return $this;
@@ -294,6 +393,11 @@ class ObjectWithDeprecatedFields implements ModelInterface, ArrayAccess, \JsonSe
      */
     public function setDeprecatedRef($deprecated_ref)
     {
+
+        if (is_null($deprecated_ref)) {
+            throw new \InvalidArgumentException('non-nullable deprecated_ref cannot be null');
+        }
+
         $this->container['deprecated_ref'] = $deprecated_ref;
 
         return $this;
@@ -320,6 +424,11 @@ class ObjectWithDeprecatedFields implements ModelInterface, ArrayAccess, \JsonSe
      */
     public function setBars($bars)
     {
+
+        if (is_null($bars)) {
+            throw new \InvalidArgumentException('non-nullable bars cannot be null');
+        }
+
         $this->container['bars'] = $bars;
 
         return $this;
@@ -398,7 +507,7 @@ class ObjectWithDeprecatedFields implements ModelInterface, ArrayAccess, \JsonSe
      */
     public function __toString()
     {
-        return json_encode(
+        return (string)json_encode(
             ObjectSerializer::sanitizeForSerialization($this),
             JSON_PRETTY_PRINT
         );

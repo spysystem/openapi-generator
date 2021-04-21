@@ -46,6 +46,9 @@ class AllOfWithSingleRef implements ModelInterface, ArrayAccess, \JsonSerializab
 {
     public const DISCRIMINATOR = null;
 
+    public const ATTRIBUTE_USERNAME = 'username';
+    public const ATTRIBUTE_SINGLE_REF_TYPE = 'single_ref_type';
+
     /**
       * The original name of the model.
       *
@@ -76,6 +79,23 @@ class AllOfWithSingleRef implements ModelInterface, ArrayAccess, \JsonSerializab
     ];
 
     /**
+      * Array of nullable properties. Used for (de)serialization
+      *
+      * @var boolean[]
+      */
+    protected static $openAPINullables = [
+        'username' => false,
+		'single_ref_type' => true
+    ];
+
+    /**
+      * If a nullable field gets set to null, insert it here
+      *
+      * @var boolean[]
+      */
+    protected $openAPINullablesSetToNull = [];
+
+    /**
      * Array of property to type mappings. Used for (de)serialization
      *
      * @return array
@@ -93,6 +113,60 @@ class AllOfWithSingleRef implements ModelInterface, ArrayAccess, \JsonSerializab
     public static function openAPIFormats()
     {
         return self::$openAPIFormats;
+    }
+
+    /**
+     * Array of property to nullable mappings. Used for (de)serialization
+     *
+     * @return array
+     */
+    public static function openAPINullables()
+    {
+        return self::$openAPINullables;
+    }
+
+    /**
+     * Array of nullable field names deliberately set to null
+     *
+     * @return array
+     */
+    public function getOpenAPINullablesSetToNull()
+    {
+        return $this->openAPINullablesSetToNull;
+    }
+
+    public function setOpenAPINullablesSetToNull($nullablesSetToNull)
+    {
+        $this->openAPINullablesSetToNull=$nullablesSetToNull;
+
+        return $this;
+    }
+
+    /**
+     * Checks if a property is nullable
+     *
+     * @return bool
+     */
+    public static function isNullable(string $property): bool
+    {
+        if (isset(self::$openAPINullables[$property])) {
+            return self::$openAPINullables[$property];
+        }
+
+        return false;
+    }
+
+    /**
+     * Checks if a nullable property is set to null.
+     *
+     * @return bool
+     */
+    public function isNullableSetToNull(string $property): bool
+    {
+        if (in_array($property, $this->getOpenAPINullablesSetToNull())) {
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -183,8 +257,19 @@ class AllOfWithSingleRef implements ModelInterface, ArrayAccess, \JsonSerializab
      */
     public function __construct(array $data = null)
     {
-        $this->container['username'] = $data['username'] ?? null;
-        $this->container['single_ref_type'] = $data['single_ref_type'] ?? null;
+        $this->setIfExists('username', $data, null);
+        $this->setIfExists('single_ref_type', $data, null);
+    }
+
+    public function setIfExists(string $variableName, $fields, $defaultValue)
+    {
+        if (is_array($fields) && array_key_exists($variableName, $fields) && is_null($fields[$variableName]) && self::isNullable($variableName)) {
+            array_push($this->openAPINullablesSetToNull, $variableName);
+        }
+
+        $this->container[$variableName] = isset($fields[$variableName]) ? $fields[$variableName] : $defaultValue;
+
+        return $this;
     }
 
     /**
@@ -230,6 +315,11 @@ class AllOfWithSingleRef implements ModelInterface, ArrayAccess, \JsonSerializab
      */
     public function setUsername($username)
     {
+
+        if (is_null($username)) {
+            throw new \InvalidArgumentException('non-nullable username cannot be null');
+        }
+
         $this->container['username'] = $username;
 
         return $this;
@@ -254,6 +344,18 @@ class AllOfWithSingleRef implements ModelInterface, ArrayAccess, \JsonSerializab
      */
     public function setSingleRefType($single_ref_type)
     {
+
+        if (is_null($single_ref_type)) {
+            array_push($this->openAPINullablesSetToNull, 'single_ref_type');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('single_ref_type', $nullablesSetToNull);
+            if ($index !== FALSE) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+
         $this->container['single_ref_type'] = $single_ref_type;
 
         return $this;
@@ -332,7 +434,7 @@ class AllOfWithSingleRef implements ModelInterface, ArrayAccess, \JsonSerializab
      */
     public function __toString()
     {
-        return json_encode(
+        return (string)json_encode(
             ObjectSerializer::sanitizeForSerialization($this),
             JSON_PRETTY_PRINT
         );
