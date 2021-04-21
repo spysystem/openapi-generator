@@ -98,7 +98,7 @@ class ObjectSerializer
                             }
                         }
                     }
-                    if ($value !== null) {
+                    if (($data::isNullable($property) && $data->isNullableSetToNull($property)) || $value !== null) {
                         $values[$data::attributeMap()[$property]] = self::sanitizeForSerialization($value, $openAPIType, $formats[$property]);
                     }
                 }
@@ -275,11 +275,11 @@ class ObjectSerializer
 
         if (strcasecmp(substr($class, -2), '[]') === 0) {
             $data = is_string($data) ? json_decode($data) : $data;
-            
+
             if (!is_array($data)) {
                 throw new \InvalidArgumentException("Invalid array '$class'");
             }
-            
+
             $subClass = substr($class, 0, -2);
             $values = [];
             foreach ($data as $key => $value) {
@@ -371,12 +371,24 @@ class ObjectSerializer
                 }
             }
 
+            if (is_array($data)) {
+                 $data = (object)$data;
+            }
+
             /** @var ModelInterface $instance */
             $instance = new $class();
             foreach ($instance::openAPITypes() as $property => $type) {
                 $propertySetter = $instance::setters()[$property];
 
-                if (!isset($propertySetter) || !isset($data->{$instance::attributeMap()[$property]})) {
+                if (!isset($propertySetter)) {
+                    continue;
+                }
+
+                if (!isset($data->{$instance::attributeMap()[$property]})) {
+                    if($instance::isNullable($property)) {
+                        $instance->$propertySetter(null);
+                    }
+
                     continue;
                 }
 

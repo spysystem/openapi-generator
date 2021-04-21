@@ -89,6 +89,29 @@ class User implements ModelInterface, ArrayAccess, \JsonSerializable
     ];
 
     /**
+      * Array of nullable properties. Used for (de)serialization
+      *
+      * @var boolean[]
+      */
+    protected static $openAPINullables = [
+        'id' => false,
+		'username' => false,
+		'first_name' => false,
+		'last_name' => false,
+		'email' => false,
+		'password' => false,
+		'phone' => false,
+		'user_status' => false
+    ];
+
+    /**
+      * If a nullable field gets set to null, insert it here
+      *
+      * @var boolean[]
+      */
+    protected $openAPINullablesSetToNull = [];
+
+    /**
      * Array of property to type mappings. Used for (de)serialization
      *
      * @return array
@@ -106,6 +129,60 @@ class User implements ModelInterface, ArrayAccess, \JsonSerializable
     public static function openAPIFormats()
     {
         return self::$openAPIFormats;
+    }
+
+    /**
+     * Array of property to nullable mappings. Used for (de)serialization
+     *
+     * @return array
+     */
+    public static function openAPINullables()
+    {
+        return self::$openAPINullables;
+    }
+
+    /**
+     * Array of nullable field names deliberately set to null
+     *
+     * @return array
+     */
+    public function getOpenAPINullablesSetToNull()
+    {
+        return $this->openAPINullablesSetToNull;
+    }
+
+    public function setOpenAPINullablesSetToNull($nullablesSetToNull)
+    {
+        $this->openAPINullablesSetToNull=$nullablesSetToNull;
+
+        return $this;
+    }
+
+    /**
+     * Checks if a property is nullable
+     *
+     * @return bool
+     */
+    public static function isNullable(string $property): bool
+    {
+        if (isset(self::$openAPINullables[$property])) {
+            return self::$openAPINullables[$property];
+        }
+
+        return false;
+    }
+
+    /**
+     * Checks if a nullable property is set to null.
+     *
+     * @return bool
+     */
+    public function isNullableSetToNull(string $property): bool
+    {
+        if (in_array($property, $this->getOpenAPINullablesSetToNull())) {
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -217,14 +294,25 @@ class User implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     public function __construct(array $data = null)
     {
-        $this->container['id'] = $data['id'] ?? null;
-        $this->container['username'] = $data['username'] ?? null;
-        $this->container['first_name'] = $data['first_name'] ?? null;
-        $this->container['last_name'] = $data['last_name'] ?? null;
-        $this->container['email'] = $data['email'] ?? null;
-        $this->container['password'] = $data['password'] ?? null;
-        $this->container['phone'] = $data['phone'] ?? null;
-        $this->container['user_status'] = $data['user_status'] ?? null;
+        $this->setIfExists('id', $data, null);
+        $this->setIfExists('username', $data, null);
+        $this->setIfExists('first_name', $data, null);
+        $this->setIfExists('last_name', $data, null);
+        $this->setIfExists('email', $data, null);
+        $this->setIfExists('password', $data, null);
+        $this->setIfExists('phone', $data, null);
+        $this->setIfExists('user_status', $data, null);
+    }
+
+    public function setIfExists(string $variableName, $fields, $defaultValue)
+    {
+        if (is_array($fields) && array_key_exists($variableName, $fields) && is_null($fields[$variableName]) && self::isNullable($variableName)) {
+            array_push($this->openAPINullablesSetToNull, $variableName);
+        }
+
+        $this->container[$variableName] = isset($fields[$variableName]) ? $fields[$variableName] : $defaultValue;
+
+        return $this;
     }
 
     /**
@@ -270,6 +358,11 @@ class User implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     public function setId($id)
     {
+
+        if (is_null($id)) {
+            throw new \InvalidArgumentException('non-nullable id cannot be null');
+        }
+
         $this->container['id'] = $id;
 
         return $this;
@@ -294,6 +387,11 @@ class User implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     public function setUsername($username)
     {
+
+        if (is_null($username)) {
+            throw new \InvalidArgumentException('non-nullable username cannot be null');
+        }
+
         $this->container['username'] = $username;
 
         return $this;
@@ -318,6 +416,11 @@ class User implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     public function setFirstName($first_name)
     {
+
+        if (is_null($first_name)) {
+            throw new \InvalidArgumentException('non-nullable first_name cannot be null');
+        }
+
         $this->container['first_name'] = $first_name;
 
         return $this;
@@ -342,6 +445,11 @@ class User implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     public function setLastName($last_name)
     {
+
+        if (is_null($last_name)) {
+            throw new \InvalidArgumentException('non-nullable last_name cannot be null');
+        }
+
         $this->container['last_name'] = $last_name;
 
         return $this;
@@ -366,6 +474,11 @@ class User implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     public function setEmail($email)
     {
+
+        if (is_null($email)) {
+            throw new \InvalidArgumentException('non-nullable email cannot be null');
+        }
+
         $this->container['email'] = $email;
 
         return $this;
@@ -390,6 +503,11 @@ class User implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     public function setPassword($password)
     {
+
+        if (is_null($password)) {
+            throw new \InvalidArgumentException('non-nullable password cannot be null');
+        }
+
         $this->container['password'] = $password;
 
         return $this;
@@ -414,6 +532,11 @@ class User implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     public function setPhone($phone)
     {
+
+        if (is_null($phone)) {
+            throw new \InvalidArgumentException('non-nullable phone cannot be null');
+        }
+
         $this->container['phone'] = $phone;
 
         return $this;
@@ -438,6 +561,11 @@ class User implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     public function setUserStatus($user_status)
     {
+
+        if (is_null($user_status)) {
+            throw new \InvalidArgumentException('non-nullable user_status cannot be null');
+        }
+
         $this->container['user_status'] = $user_status;
 
         return $this;
@@ -514,7 +642,7 @@ class User implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     public function __toString()
     {
-        return json_encode(
+        return (string)json_encode(
             ObjectSerializer::sanitizeForSerialization($this),
             JSON_PRETTY_PRINT
         );

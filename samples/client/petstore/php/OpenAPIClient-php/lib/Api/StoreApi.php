@@ -30,6 +30,9 @@ namespace OpenAPI\Client\Api;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
+#region SPY Code
+use GuzzleHttp\Cookie\CookieJar;
+#endregion
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\MultipartStream;
 use GuzzleHttp\Psr7\Request;
@@ -68,6 +71,42 @@ class StoreApi
      * @var int Host index
      */
     protected $hostIndex;
+
+	#region SPY Code
+	protected $bXDebugOnInstance	= false;
+	protected $bXDebugOnNextRequest;
+
+	/**
+	 * @param bool $bXDebugOnInstance
+	 * @return $this
+	 */
+	public function setXDebugOnInstance(bool $bXDebugOnInstance)
+	{
+		$this->bXDebugOnInstance	= $bXDebugOnInstance;
+
+		return $this;
+	}
+
+	/**
+	 * @return $this
+	 */
+	public function setXDebugOnNextRequest()
+	{
+		$this->bXDebugOnNextRequest	= true;
+
+		return $this;
+	}
+
+	/**
+	 * Gets the OpenAPI Spec Version
+	 *
+	 * @return string
+	 */
+	public static function getSpecVersion()
+	{
+		return '1.0.0';
+	}
+	#endregion
 
     /**
      * @param ClientInterface $client
@@ -399,6 +438,9 @@ class StoreApi
                         $content = $responseBody; //stream goes to serializer
                     } else {
                         $content = (string) $responseBody;
+                        if ('array<string,int>' !== 'string') {
+                            $content = json_decode($content);
+                        }
                     }
 
                     return [
@@ -414,6 +456,9 @@ class StoreApi
                 $content = $responseBody; //stream goes to serializer
             } else {
                 $content = (string) $responseBody;
+                if ('array<string,int>' !== 'string') {
+                    $content = json_decode($content);
+                }
             }
 
             return [
@@ -654,6 +699,9 @@ class StoreApi
                         $content = $responseBody; //stream goes to serializer
                     } else {
                         $content = (string) $responseBody;
+                        if ('\OpenAPI\Client\Model\Order' !== 'string') {
+                            $content = json_decode($content);
+                        }
                     }
 
                     return [
@@ -669,6 +717,9 @@ class StoreApi
                 $content = $responseBody; //stream goes to serializer
             } else {
                 $content = (string) $responseBody;
+                if ('\OpenAPI\Client\Model\Order' !== 'string') {
+                    $content = json_decode($content);
+                }
             }
 
             return [
@@ -928,6 +979,9 @@ class StoreApi
                         $content = $responseBody; //stream goes to serializer
                     } else {
                         $content = (string) $responseBody;
+                        if ('\OpenAPI\Client\Model\Order' !== 'string') {
+                            $content = json_decode($content);
+                        }
                     }
 
                     return [
@@ -943,6 +997,9 @@ class StoreApi
                 $content = $responseBody; //stream goes to serializer
             } else {
                 $content = (string) $responseBody;
+                if ('\OpenAPI\Client\Model\Order' !== 'string') {
+                    $content = json_decode($content);
+                }
             }
 
             return [
@@ -1141,6 +1198,33 @@ class StoreApi
                 throw new \RuntimeException('Failed to open the debug file: ' . $this->config->getDebugFile());
             }
         }
+
+		#region SPY Code
+		$options[RequestOptions::HEADERS]	= [
+			'X-OpenAPISpecVersion'	=> '1.0.0',
+		];
+		$bEnableXDebug	= $this->bXDebugOnNextRequest;
+
+		if($bEnableXDebug === null)
+		{
+			$bEnableXDebug	= $this->bXDebugOnInstance;
+		}
+
+		$this->bXDebugOnNextRequest	= null;
+
+		if($bEnableXDebug)
+		{
+			if(preg_match('/^(?:https?:\/\/)?([^\/:]+\.[^\/:]+)/i', $this->getConfig()->getHost(), $arrMatches) === 1)
+			{
+				$options['cookies'] = CookieJar::fromArray(
+					[
+						'XDEBUG_SESSION'	=> 'PHPSTORM',
+					],
+					$arrMatches[1]
+				);
+			}
+		}
+		#endregion
 
         return $options;
     }

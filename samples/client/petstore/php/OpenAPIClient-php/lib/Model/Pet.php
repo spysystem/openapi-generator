@@ -85,6 +85,27 @@ class Pet implements ModelInterface, ArrayAccess, \JsonSerializable
     ];
 
     /**
+      * Array of nullable properties. Used for (de)serialization
+      *
+      * @var boolean[]
+      */
+    protected static $openAPINullables = [
+        'id' => false,
+		'category' => false,
+		'name' => false,
+		'photo_urls' => false,
+		'tags' => false,
+		'status' => false
+    ];
+
+    /**
+      * If a nullable field gets set to null, insert it here
+      *
+      * @var boolean[]
+      */
+    protected $openAPINullablesSetToNull = [];
+
+    /**
      * Array of property to type mappings. Used for (de)serialization
      *
      * @return array
@@ -102,6 +123,60 @@ class Pet implements ModelInterface, ArrayAccess, \JsonSerializable
     public static function openAPIFormats()
     {
         return self::$openAPIFormats;
+    }
+
+    /**
+     * Array of property to nullable mappings. Used for (de)serialization
+     *
+     * @return array
+     */
+    public static function openAPINullables()
+    {
+        return self::$openAPINullables;
+    }
+
+    /**
+     * Array of nullable field names deliberately set to null
+     *
+     * @return array
+     */
+    public function getOpenAPINullablesSetToNull()
+    {
+        return $this->openAPINullablesSetToNull;
+    }
+
+    public function setOpenAPINullablesSetToNull($nullablesSetToNull)
+    {
+        $this->openAPINullablesSetToNull=$nullablesSetToNull;
+
+        return $this;
+    }
+
+    /**
+     * Checks if a property is nullable
+     *
+     * @return bool
+     */
+    public static function isNullable(string $property): bool
+    {
+        if (isset(self::$openAPINullables[$property])) {
+            return self::$openAPINullables[$property];
+        }
+
+        return false;
+    }
+
+    /**
+     * Checks if a nullable property is set to null.
+     *
+     * @return bool
+     */
+    public function isNullableSetToNull(string $property): bool
+    {
+        if (in_array($property, $this->getOpenAPINullablesSetToNull())) {
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -224,12 +299,23 @@ class Pet implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     public function __construct(array $data = null)
     {
-        $this->container['id'] = $data['id'] ?? null;
-        $this->container['category'] = $data['category'] ?? null;
-        $this->container['name'] = $data['name'] ?? null;
-        $this->container['photo_urls'] = $data['photo_urls'] ?? null;
-        $this->container['tags'] = $data['tags'] ?? null;
-        $this->container['status'] = $data['status'] ?? null;
+        $this->setIfExists('id', $data, null);
+        $this->setIfExists('category', $data, null);
+        $this->setIfExists('name', $data, null);
+        $this->setIfExists('photo_urls', $data, null);
+        $this->setIfExists('tags', $data, null);
+        $this->setIfExists('status', $data, null);
+    }
+
+    public function setIfExists(string $variableName, $fields, $defaultValue)
+    {
+        if (is_array($fields) && array_key_exists($variableName, $fields) && is_null($fields[$variableName]) && self::isNullable($variableName)) {
+            array_push($this->openAPINullablesSetToNull, $variableName);
+        }
+
+        $this->container[$variableName] = isset($fields[$variableName]) ? $fields[$variableName] : $defaultValue;
+
+        return $this;
     }
 
     /**
@@ -290,6 +376,11 @@ class Pet implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     public function setId($id)
     {
+
+        if (is_null($id)) {
+            throw new \InvalidArgumentException('non-nullable id cannot be null');
+        }
+
         $this->container['id'] = $id;
 
         return $this;
@@ -314,6 +405,11 @@ class Pet implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     public function setCategory($category)
     {
+
+        if (is_null($category)) {
+            throw new \InvalidArgumentException('non-nullable category cannot be null');
+        }
+
         $this->container['category'] = $category;
 
         return $this;
@@ -338,6 +434,11 @@ class Pet implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     public function setName($name)
     {
+
+        if (is_null($name)) {
+            throw new \InvalidArgumentException('non-nullable name cannot be null');
+        }
+
         $this->container['name'] = $name;
 
         return $this;
@@ -364,6 +465,11 @@ class Pet implements ModelInterface, ArrayAccess, \JsonSerializable
     {
 
 
+
+        if (is_null($photo_urls)) {
+            throw new \InvalidArgumentException('non-nullable photo_urls cannot be null');
+        }
+
         $this->container['photo_urls'] = $photo_urls;
 
         return $this;
@@ -388,6 +494,11 @@ class Pet implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     public function setTags($tags)
     {
+
+        if (is_null($tags)) {
+            throw new \InvalidArgumentException('non-nullable tags cannot be null');
+        }
+
         $this->container['tags'] = $tags;
 
         return $this;
@@ -422,6 +533,11 @@ class Pet implements ModelInterface, ArrayAccess, \JsonSerializable
                 )
             );
         }
+
+        if (is_null($status)) {
+            throw new \InvalidArgumentException('non-nullable status cannot be null');
+        }
+
         $this->container['status'] = $status;
 
         return $this;
@@ -498,7 +614,7 @@ class Pet implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     public function __toString()
     {
-        return json_encode(
+        return (string)json_encode(
             ObjectSerializer::sanitizeForSerialization($this),
             JSON_PRETTY_PRINT
         );
