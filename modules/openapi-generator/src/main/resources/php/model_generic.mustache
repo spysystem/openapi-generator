@@ -2,6 +2,10 @@ class {{classname}} {{#parentSchema}}extends {{{parent}}} {{/parentSchema}}{{^pa
 {
     public const DISCRIMINATOR = {{#discriminator}}'{{discriminatorName}}'{{/discriminator}}{{^discriminator}}null{{/discriminator}};
 
+    {{#vars}}
+    public const ATTRIBUTE_{{#lambda.uppercase}}{{name}}{{/lambda.uppercase}} = '{{name}}';
+    {{/vars}}
+
     /**
       * The original name of the model.
       *
