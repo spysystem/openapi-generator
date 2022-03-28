@@ -47,6 +47,10 @@ class ApiResponse implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
+    public const ATTRIBUTE_CODE = 'code';
+    public const ATTRIBUTE_TYPE = 'type';
+    public const ATTRIBUTE_MESSAGE = 'message';
+
     /**
       * The original name of the model.
       *

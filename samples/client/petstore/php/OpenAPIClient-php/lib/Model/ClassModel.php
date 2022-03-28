@@ -48,6 +48,8 @@ class ClassModel implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
+    public const ATTRIBUTE__CLASS = '_class';
+
     /**
       * The original name of the model.
       *

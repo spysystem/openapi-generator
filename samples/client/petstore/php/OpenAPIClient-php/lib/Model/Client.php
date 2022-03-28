@@ -47,6 +47,8 @@ class Client implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
+    public const ATTRIBUTE_CLIENT = 'client';
+
     /**
       * The original name of the model.
       *

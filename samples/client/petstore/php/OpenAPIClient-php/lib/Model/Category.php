@@ -47,6 +47,9 @@ class Category implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
+    public const ATTRIBUTE_ID = 'id';
+    public const ATTRIBUTE_NAME = 'name';
+
     /**
       * The original name of the model.
       *

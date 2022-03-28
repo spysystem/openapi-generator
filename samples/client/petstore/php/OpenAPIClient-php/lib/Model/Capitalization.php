@@ -47,6 +47,13 @@ class Capitalization implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
+    public const ATTRIBUTE_SMALL_CAMEL = 'small_camel';
+    public const ATTRIBUTE_CAPITAL_CAMEL = 'capital_camel';
+    public const ATTRIBUTE_SMALL_SNAKE = 'small_snake';
+    public const ATTRIBUTE_CAPITAL_SNAKE = 'capital_snake';
+    public const ATTRIBUTE_SCA_ETH_FLOW_POINTS = 'sca_eth_flow_points';
+    public const ATTRIBUTE_ATT_NAME = 'att_name';
+
     /**
       * The original name of the model.
       *

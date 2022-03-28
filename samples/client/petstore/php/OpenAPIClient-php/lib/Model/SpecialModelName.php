@@ -47,6 +47,8 @@ class SpecialModelName implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
+    public const ATTRIBUTE_SPECIAL_PROPERTY_NAME = 'special_property_name';
+
     /**
       * The original name of the model.
       *

@@ -47,6 +47,9 @@ class HasOnlyReadOnly implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
+    public const ATTRIBUTE_BAR = 'bar';
+    public const ATTRIBUTE_FOO = 'foo';
+
     /**
       * The original name of the model.
       *

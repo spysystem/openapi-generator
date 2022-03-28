@@ -48,6 +48,8 @@ class ModelReturn implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
+    public const ATTRIBUTE_RETURN = 'return';
+
     /**
       * The original name of the model.
       *

@@ -47,6 +47,8 @@ class OuterObjectWithEnumProperty implements ModelInterface, ArrayAccess, \JsonS
 {
     public const DISCRIMINATOR = null;
 
+    public const ATTRIBUTE_VALUE = 'value';
+
     /**
       * The original name of the model.
       *

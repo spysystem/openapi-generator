@@ -47,6 +47,23 @@ class FormatTest implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
+    public const ATTRIBUTE_INTEGER = 'integer';
+    public const ATTRIBUTE_INT32 = 'int32';
+    public const ATTRIBUTE_INT64 = 'int64';
+    public const ATTRIBUTE_NUMBER = 'number';
+    public const ATTRIBUTE_FLOAT = 'float';
+    public const ATTRIBUTE_DOUBLE = 'double';
+    public const ATTRIBUTE_DECIMAL = 'decimal';
+    public const ATTRIBUTE_STRING = 'string';
+    public const ATTRIBUTE_BYTE = 'byte';
+    public const ATTRIBUTE_BINARY = 'binary';
+    public const ATTRIBUTE_DATE = 'date';
+    public const ATTRIBUTE_DATE_TIME = 'date_time';
+    public const ATTRIBUTE_UUID = 'uuid';
+    public const ATTRIBUTE_PASSWORD = 'password';
+    public const ATTRIBUTE_PATTERN_WITH_DIGITS = 'pattern_with_digits';
+    public const ATTRIBUTE_PATTERN_WITH_DIGITS_AND_DELIMITER = 'pattern_with_digits_and_delimiter';
+
     /**
       * The original name of the model.
       *

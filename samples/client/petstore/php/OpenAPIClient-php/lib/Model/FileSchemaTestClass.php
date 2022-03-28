@@ -47,6 +47,9 @@ class FileSchemaTestClass implements ModelInterface, ArrayAccess, \JsonSerializa
 {
     public const DISCRIMINATOR = null;
 
+    public const ATTRIBUTE_FILE = 'file';
+    public const ATTRIBUTE_FILES = 'files';
+
     /**
       * The original name of the model.
       *

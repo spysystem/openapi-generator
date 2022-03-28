@@ -48,6 +48,8 @@ class File implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
+    public const ATTRIBUTE_SOURCE_URI = 'source_uri';
+
     /**
       * The original name of the model.
       *

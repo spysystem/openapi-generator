@@ -47,6 +47,13 @@ class Pet implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
+    public const ATTRIBUTE_ID = 'id';
+    public const ATTRIBUTE_CATEGORY = 'category';
+    public const ATTRIBUTE_NAME = 'name';
+    public const ATTRIBUTE_PHOTO_URLS = 'photo_urls';
+    public const ATTRIBUTE_TAGS = 'tags';
+    public const ATTRIBUTE_STATUS = 'status';
+
     /**
       * The original name of the model.
       *

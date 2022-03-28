@@ -47,6 +47,8 @@ class DogAllOf implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
+    public const ATTRIBUTE_BREED = 'breed';
+
     /**
       * The original name of the model.
       *

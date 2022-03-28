@@ -47,6 +47,8 @@ class ArrayOfNumberOnly implements ModelInterface, ArrayAccess, \JsonSerializabl
 {
     public const DISCRIMINATOR = null;
 
+    public const ATTRIBUTE_ARRAY_NUMBER = 'array_number';
+
     /**
       * The original name of the model.
       *

@@ -47,6 +47,8 @@ class Foo implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
+    public const ATTRIBUTE_BAR = 'bar';
+
     /**
       * The original name of the model.
       *

@@ -47,6 +47,8 @@ class ModelList implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
+    public const ATTRIBUTE__123_LIST = '_123_list';
+
     /**
       * The original name of the model.
       *

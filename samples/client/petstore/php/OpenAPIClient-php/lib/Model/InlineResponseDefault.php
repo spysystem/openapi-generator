@@ -47,6 +47,8 @@ class InlineResponseDefault implements ModelInterface, ArrayAccess, \JsonSeriali
 {
     public const DISCRIMINATOR = null;
 
+    public const ATTRIBUTE_STRING = 'string';
+
     /**
       * The original name of the model.
       *

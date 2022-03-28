@@ -47,6 +47,19 @@ class NullableClass implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
+    public const ATTRIBUTE_INTEGER_PROP = 'integer_prop';
+    public const ATTRIBUTE_NUMBER_PROP = 'number_prop';
+    public const ATTRIBUTE_BOOLEAN_PROP = 'boolean_prop';
+    public const ATTRIBUTE_STRING_PROP = 'string_prop';
+    public const ATTRIBUTE_DATE_PROP = 'date_prop';
+    public const ATTRIBUTE_DATETIME_PROP = 'datetime_prop';
+    public const ATTRIBUTE_ARRAY_NULLABLE_PROP = 'array_nullable_prop';
+    public const ATTRIBUTE_ARRAY_AND_ITEMS_NULLABLE_PROP = 'array_and_items_nullable_prop';
+    public const ATTRIBUTE_ARRAY_ITEMS_NULLABLE = 'array_items_nullable';
+    public const ATTRIBUTE_OBJECT_NULLABLE_PROP = 'object_nullable_prop';
+    public const ATTRIBUTE_OBJECT_AND_ITEMS_NULLABLE_PROP = 'object_and_items_nullable_prop';
+    public const ATTRIBUTE_OBJECT_ITEMS_NULLABLE = 'object_items_nullable';
+
     /**
       * The original name of the model.
       *

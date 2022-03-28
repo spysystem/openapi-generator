@@ -47,6 +47,9 @@ class AdditionalPropertiesClass implements ModelInterface, ArrayAccess, \JsonSer
 {
     public const DISCRIMINATOR = null;
 
+    public const ATTRIBUTE_MAP_PROPERTY = 'map_property';
+    public const ATTRIBUTE_MAP_OF_MAP_PROPERTY = 'map_of_map_property';
+
     /**
       * The original name of the model.
       *

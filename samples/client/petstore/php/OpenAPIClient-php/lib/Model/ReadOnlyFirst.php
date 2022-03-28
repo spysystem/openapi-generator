@@ -47,6 +47,9 @@ class ReadOnlyFirst implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
+    public const ATTRIBUTE_BAR = 'bar';
+    public const ATTRIBUTE_BAZ = 'baz';
+
     /**
       * The original name of the model.
       *

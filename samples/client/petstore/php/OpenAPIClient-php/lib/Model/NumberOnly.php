@@ -47,6 +47,8 @@ class NumberOnly implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
+    public const ATTRIBUTE_JUST_NUMBER = 'just_number';
+
     /**
       * The original name of the model.
       *

@@ -47,6 +47,8 @@ class CatAllOf implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
+    public const ATTRIBUTE_DECLAWED = 'declawed';
+
     /**
       * The original name of the model.
       *

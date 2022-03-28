@@ -47,6 +47,15 @@ class User implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
+    public const ATTRIBUTE_ID = 'id';
+    public const ATTRIBUTE_USERNAME = 'username';
+    public const ATTRIBUTE_FIRST_NAME = 'first_name';
+    public const ATTRIBUTE_LAST_NAME = 'last_name';
+    public const ATTRIBUTE_EMAIL = 'email';
+    public const ATTRIBUTE_PASSWORD = 'password';
+    public const ATTRIBUTE_PHONE = 'phone';
+    public const ATTRIBUTE_USER_STATUS = 'user_status';
+
     /**
       * The original name of the model.
       *

@@ -47,6 +47,9 @@ class EnumArrays implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
+    public const ATTRIBUTE_JUST_SYMBOL = 'just_symbol';
+    public const ATTRIBUTE_ARRAY_ENUM = 'array_enum';
+
     /**
       * The original name of the model.
       *
