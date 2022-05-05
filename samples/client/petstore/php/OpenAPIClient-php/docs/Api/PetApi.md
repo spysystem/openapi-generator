@@ -1,18 +1,18 @@
 # OpenAPI\Client\PetApi
 
-All URIs are relative to http://petstore.swagger.io:80/v2.
+All URIs are relative to http://petstore.swagger.io:80/v2, except if the operation defines another base path.
 
-Method | HTTP request | Description
-------------- | ------------- | -------------
-[**addPet()**](PetApi.md#addPet) | **POST** /pet | Add a new pet to the store
-[**deletePet()**](PetApi.md#deletePet) | **DELETE** /pet/{petId} | Deletes a pet
-[**findPetsByStatus()**](PetApi.md#findPetsByStatus) | **GET** /pet/findByStatus | Finds Pets by status
-[**findPetsByTags()**](PetApi.md#findPetsByTags) | **GET** /pet/findByTags | Finds Pets by tags
-[**getPetById()**](PetApi.md#getPetById) | **GET** /pet/{petId} | Find pet by ID
-[**updatePet()**](PetApi.md#updatePet) | **PUT** /pet | Update an existing pet
-[**updatePetWithForm()**](PetApi.md#updatePetWithForm) | **POST** /pet/{petId} | Updates a pet in the store with form data
-[**uploadFile()**](PetApi.md#uploadFile) | **POST** /pet/{petId}/uploadImage | uploads an image
-[**uploadFileWithRequiredFile()**](PetApi.md#uploadFileWithRequiredFile) | **POST** /fake/{petId}/uploadImageWithRequiredFile | uploads an image (required)
+| Method | HTTP request | Description |
+| ------------- | ------------- | ------------- |
+| [**addPet()**](PetApi.md#addPet) | **POST** /pet | Add a new pet to the store |
+[**deletePet()**](PetApi.md#deletePet) | **DELETE** /pet/{petId} | Deletes a pet |
+[**findPetsByStatus()**](PetApi.md#findPetsByStatus) | **GET** /pet/findByStatus | Finds Pets by status |
+[**findPetsByTags()**](PetApi.md#findPetsByTags) | **GET** /pet/findByTags | Finds Pets by tags |
+[**getPetById()**](PetApi.md#getPetById) | **GET** /pet/{petId} | Find pet by ID |
+[**updatePet()**](PetApi.md#updatePet) | **PUT** /pet | Update an existing pet |
+[**updatePetWithForm()**](PetApi.md#updatePetWithForm) | **POST** /pet/{petId} | Updates a pet in the store with form data |
+[**uploadFile()**](PetApi.md#uploadFile) | **POST** /pet/{petId}/uploadImage | uploads an image |
+[**uploadFileWithRequiredFile()**](PetApi.md#uploadFileWithRequiredFile) | **POST** /fake/{petId}/uploadImageWithRequiredFile | uploads an image (required) |
 
 
 ## `addPet()`
@@ -20,6 +20,9 @@ Method | HTTP request | Description
 ```php
 addPet($pet)
 ```
+### URI(s):
+- http://petstore.swagger.io/v2 
+- http://path-server-test.petstore.local/v2 
 
 Add a new pet to the store
 
@@ -318,6 +321,9 @@ Name | Type | Description  | Notes
 ```php
 updatePet($pet)
 ```
+### URI(s):
+- http://petstore.swagger.io/v2 
+- http://path-server-test.petstore.local/v2 
 
 Update an existing pet
 
