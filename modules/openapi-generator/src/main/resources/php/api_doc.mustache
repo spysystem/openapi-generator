@@ -2,11 +2,11 @@
 
 {{description}}{{/description}}
 
-All URIs are relative to {{basePath}}.
+All URIs are relative to {{basePath}}, except if the operation defines another base path.
 
-Method | HTTP request | Description
-------------- | ------------- | -------------
-{{#operations}}{{#operation}}[**{{operationId}}()**]({{classname}}.md#{{operationId}}) | **{{httpMethod}}** {{path}} | {{#summary}}{{summary}}{{/summary}}
+| Method | HTTP request | Description |
+| ------------- | ------------- | ------------- |
+| {{#operations}}{{#operation}}[**{{operationId}}()**]({{classname}}.md#{{operationId}}) | **{{httpMethod}}** {{path}} | {{#summary}}{{summary}}{{/summary}} |
 {{/operation}}{{/operations}}{{#operations}}{{#operation}}
 
 ## `{{{operationId}}}()`
@@ -14,6 +14,18 @@ Method | HTTP request | Description
 ```php
 {{{operationId}}}({{#allParams}}${{paramName}}{{^-last}}, {{/-last}}{{/allParams}}){{#returnType}}: {{{returnType}}}{{/returnType}}
 ```
+{{#servers}}
+{{#-first}}
+### URI(s):
+{{/-first}}
+- {{{url}}} {{#description}}{{.}}{{/description}}
+{{#variables}}
+{{#-first}}
+    - Variables:
+{{/-first}}
+      - {{{name}}}: {{{description}}}{{^description}} No description provided{{/description}}
+{{/variables}}
+{{/servers}}
 
 {{{summary}}}{{#notes}}
 
