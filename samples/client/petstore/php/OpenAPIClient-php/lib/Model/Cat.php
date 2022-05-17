@@ -45,7 +45,25 @@ class Cat extends Animal
 {
     public const DISCRIMINATOR = null;
 
-    public const ATTRIBUTE_DECLAWED = 'declawed';
+    /**
+      * Return an object with the Model Fields
+      *
+      * @return CatModelFields
+      */
+    public static function GetModelFields(): CatModelFields
+    {
+        return new CatModelFields();
+    }
+
+    /**
+      * Return an object with the Model Attributes
+      *
+      * @return CatModelAttributes
+      */
+    public static function GetModelAttributes(): CatModelAttributes
+    {
+        return new CatModelAttributes();
+    }
 
     /**
       * The original name of the model.

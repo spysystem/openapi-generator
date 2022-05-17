@@ -47,7 +47,25 @@ class InlineResponseDefault implements ModelInterface, ArrayAccess, \JsonSeriali
 {
     public const DISCRIMINATOR = null;
 
-    public const ATTRIBUTE_STRING = 'string';
+    /**
+      * Return an object with the Model Fields
+      *
+      * @return InlineResponseDefaultModelFields
+      */
+    public static function GetModelFields(): InlineResponseDefaultModelFields
+    {
+        return new InlineResponseDefaultModelFields();
+    }
+
+    /**
+      * Return an object with the Model Attributes
+      *
+      * @return InlineResponseDefaultModelAttributes
+      */
+    public static function GetModelAttributes(): InlineResponseDefaultModelAttributes
+    {
+        return new InlineResponseDefaultModelAttributes();
+    }
 
     /**
       * The original name of the model.

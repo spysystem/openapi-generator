@@ -47,8 +47,25 @@ class Tag implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
-    public const ATTRIBUTE_ID = 'id';
-    public const ATTRIBUTE_NAME = 'name';
+    /**
+      * Return an object with the Model Fields
+      *
+      * @return TagModelFields
+      */
+    public static function GetModelFields(): TagModelFields
+    {
+        return new TagModelFields();
+    }
+
+    /**
+      * Return an object with the Model Attributes
+      *
+      * @return TagModelAttributes
+      */
+    public static function GetModelAttributes(): TagModelAttributes
+    {
+        return new TagModelAttributes();
+    }
 
     /**
       * The original name of the model.

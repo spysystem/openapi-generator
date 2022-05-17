@@ -47,7 +47,25 @@ class NumberOnly implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
-    public const ATTRIBUTE_JUST_NUMBER = 'just_number';
+    /**
+      * Return an object with the Model Fields
+      *
+      * @return NumberOnlyModelFields
+      */
+    public static function GetModelFields(): NumberOnlyModelFields
+    {
+        return new NumberOnlyModelFields();
+    }
+
+    /**
+      * Return an object with the Model Attributes
+      *
+      * @return NumberOnlyModelAttributes
+      */
+    public static function GetModelAttributes(): NumberOnlyModelAttributes
+    {
+        return new NumberOnlyModelAttributes();
+    }
 
     /**
       * The original name of the model.

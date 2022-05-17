@@ -47,8 +47,25 @@ class EnumArrays implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
-    public const ATTRIBUTE_JUST_SYMBOL = 'just_symbol';
-    public const ATTRIBUTE_ARRAY_ENUM = 'array_enum';
+    /**
+      * Return an object with the Model Fields
+      *
+      * @return EnumArraysModelFields
+      */
+    public static function GetModelFields(): EnumArraysModelFields
+    {
+        return new EnumArraysModelFields();
+    }
+
+    /**
+      * Return an object with the Model Attributes
+      *
+      * @return EnumArraysModelAttributes
+      */
+    public static function GetModelAttributes(): EnumArraysModelAttributes
+    {
+        return new EnumArraysModelAttributes();
+    }
 
     /**
       * The original name of the model.

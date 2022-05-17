@@ -48,7 +48,25 @@ class ClassModel implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
-    public const ATTRIBUTE__CLASS = '_class';
+    /**
+      * Return an object with the Model Fields
+      *
+      * @return ClassModelModelFields
+      */
+    public static function GetModelFields(): ClassModelModelFields
+    {
+        return new ClassModelModelFields();
+    }
+
+    /**
+      * Return an object with the Model Attributes
+      *
+      * @return ClassModelModelAttributes
+      */
+    public static function GetModelAttributes(): ClassModelModelAttributes
+    {
+        return new ClassModelModelAttributes();
+    }
 
     /**
       * The original name of the model.

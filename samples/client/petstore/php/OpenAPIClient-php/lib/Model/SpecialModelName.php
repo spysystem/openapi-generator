@@ -47,7 +47,25 @@ class SpecialModelName implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
-    public const ATTRIBUTE_SPECIAL_PROPERTY_NAME = 'special_property_name';
+    /**
+      * Return an object with the Model Fields
+      *
+      * @return SpecialModelNameModelFields
+      */
+    public static function GetModelFields(): SpecialModelNameModelFields
+    {
+        return new SpecialModelNameModelFields();
+    }
+
+    /**
+      * Return an object with the Model Attributes
+      *
+      * @return SpecialModelNameModelAttributes
+      */
+    public static function GetModelAttributes(): SpecialModelNameModelAttributes
+    {
+        return new SpecialModelNameModelAttributes();
+    }
 
     /**
       * The original name of the model.

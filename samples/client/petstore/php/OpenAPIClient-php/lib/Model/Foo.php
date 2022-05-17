@@ -47,7 +47,25 @@ class Foo implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
-    public const ATTRIBUTE_BAR = 'bar';
+    /**
+      * Return an object with the Model Fields
+      *
+      * @return FooModelFields
+      */
+    public static function GetModelFields(): FooModelFields
+    {
+        return new FooModelFields();
+    }
+
+    /**
+      * Return an object with the Model Attributes
+      *
+      * @return FooModelAttributes
+      */
+    public static function GetModelAttributes(): FooModelAttributes
+    {
+        return new FooModelAttributes();
+    }
 
     /**
       * The original name of the model.

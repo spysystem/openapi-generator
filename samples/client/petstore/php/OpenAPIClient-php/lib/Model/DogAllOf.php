@@ -47,7 +47,25 @@ class DogAllOf implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
-    public const ATTRIBUTE_BREED = 'breed';
+    /**
+      * Return an object with the Model Fields
+      *
+      * @return DogAllOfModelFields
+      */
+    public static function GetModelFields(): DogAllOfModelFields
+    {
+        return new DogAllOfModelFields();
+    }
+
+    /**
+      * Return an object with the Model Attributes
+      *
+      * @return DogAllOfModelAttributes
+      */
+    public static function GetModelAttributes(): DogAllOfModelAttributes
+    {
+        return new DogAllOfModelAttributes();
+    }
 
     /**
       * The original name of the model.

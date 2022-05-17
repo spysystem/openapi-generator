@@ -47,8 +47,25 @@ class HasOnlyReadOnly implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
-    public const ATTRIBUTE_BAR = 'bar';
-    public const ATTRIBUTE_FOO = 'foo';
+    /**
+      * Return an object with the Model Fields
+      *
+      * @return HasOnlyReadOnlyModelFields
+      */
+    public static function GetModelFields(): HasOnlyReadOnlyModelFields
+    {
+        return new HasOnlyReadOnlyModelFields();
+    }
+
+    /**
+      * Return an object with the Model Attributes
+      *
+      * @return HasOnlyReadOnlyModelAttributes
+      */
+    public static function GetModelAttributes(): HasOnlyReadOnlyModelAttributes
+    {
+        return new HasOnlyReadOnlyModelAttributes();
+    }
 
     /**
       * The original name of the model.

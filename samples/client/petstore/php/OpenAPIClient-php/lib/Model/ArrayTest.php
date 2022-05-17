@@ -47,9 +47,25 @@ class ArrayTest implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
-    public const ATTRIBUTE_ARRAY_OF_STRING = 'array_of_string';
-    public const ATTRIBUTE_ARRAY_ARRAY_OF_INTEGER = 'array_array_of_integer';
-    public const ATTRIBUTE_ARRAY_ARRAY_OF_MODEL = 'array_array_of_model';
+    /**
+      * Return an object with the Model Fields
+      *
+      * @return ArrayTestModelFields
+      */
+    public static function GetModelFields(): ArrayTestModelFields
+    {
+        return new ArrayTestModelFields();
+    }
+
+    /**
+      * Return an object with the Model Attributes
+      *
+      * @return ArrayTestModelAttributes
+      */
+    public static function GetModelAttributes(): ArrayTestModelAttributes
+    {
+        return new ArrayTestModelAttributes();
+    }
 
     /**
       * The original name of the model.

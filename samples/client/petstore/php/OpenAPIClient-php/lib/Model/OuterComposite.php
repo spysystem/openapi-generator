@@ -47,9 +47,25 @@ class OuterComposite implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
-    public const ATTRIBUTE_MY_NUMBER = 'my_number';
-    public const ATTRIBUTE_MY_STRING = 'my_string';
-    public const ATTRIBUTE_MY_BOOLEAN = 'my_boolean';
+    /**
+      * Return an object with the Model Fields
+      *
+      * @return OuterCompositeModelFields
+      */
+    public static function GetModelFields(): OuterCompositeModelFields
+    {
+        return new OuterCompositeModelFields();
+    }
+
+    /**
+      * Return an object with the Model Attributes
+      *
+      * @return OuterCompositeModelAttributes
+      */
+    public static function GetModelAttributes(): OuterCompositeModelAttributes
+    {
+        return new OuterCompositeModelAttributes();
+    }
 
     /**
       * The original name of the model.

@@ -47,7 +47,25 @@ class ModelList implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
-    public const ATTRIBUTE__123_LIST = '_123_list';
+    /**
+      * Return an object with the Model Fields
+      *
+      * @return ModelListModelFields
+      */
+    public static function GetModelFields(): ModelListModelFields
+    {
+        return new ModelListModelFields();
+    }
+
+    /**
+      * Return an object with the Model Attributes
+      *
+      * @return ModelListModelAttributes
+      */
+    public static function GetModelAttributes(): ModelListModelAttributes
+    {
+        return new ModelListModelAttributes();
+    }
 
     /**
       * The original name of the model.

@@ -47,7 +47,25 @@ class CatAllOf implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
-    public const ATTRIBUTE_DECLAWED = 'declawed';
+    /**
+      * Return an object with the Model Fields
+      *
+      * @return CatAllOfModelFields
+      */
+    public static function GetModelFields(): CatAllOfModelFields
+    {
+        return new CatAllOfModelFields();
+    }
+
+    /**
+      * Return an object with the Model Attributes
+      *
+      * @return CatAllOfModelAttributes
+      */
+    public static function GetModelAttributes(): CatAllOfModelAttributes
+    {
+        return new CatAllOfModelAttributes();
+    }
 
     /**
       * The original name of the model.

@@ -47,7 +47,25 @@ class ArrayOfArrayOfNumberOnly implements ModelInterface, ArrayAccess, \JsonSeri
 {
     public const DISCRIMINATOR = null;
 
-    public const ATTRIBUTE_ARRAY_ARRAY_NUMBER = 'array_array_number';
+    /**
+      * Return an object with the Model Fields
+      *
+      * @return ArrayOfArrayOfNumberOnlyModelFields
+      */
+    public static function GetModelFields(): ArrayOfArrayOfNumberOnlyModelFields
+    {
+        return new ArrayOfArrayOfNumberOnlyModelFields();
+    }
+
+    /**
+      * Return an object with the Model Attributes
+      *
+      * @return ArrayOfArrayOfNumberOnlyModelAttributes
+      */
+    public static function GetModelAttributes(): ArrayOfArrayOfNumberOnlyModelAttributes
+    {
+        return new ArrayOfArrayOfNumberOnlyModelAttributes();
+    }
 
     /**
       * The original name of the model.

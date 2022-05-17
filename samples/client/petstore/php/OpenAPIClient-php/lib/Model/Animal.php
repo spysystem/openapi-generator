@@ -47,8 +47,25 @@ class Animal implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = 'class_name';
 
-    public const ATTRIBUTE_CLASS_NAME = 'class_name';
-    public const ATTRIBUTE_COLOR = 'color';
+    /**
+      * Return an object with the Model Fields
+      *
+      * @return AnimalModelFields
+      */
+    public static function GetModelFields(): AnimalModelFields
+    {
+        return new AnimalModelFields();
+    }
+
+    /**
+      * Return an object with the Model Attributes
+      *
+      * @return AnimalModelAttributes
+      */
+    public static function GetModelAttributes(): AnimalModelAttributes
+    {
+        return new AnimalModelAttributes();
+    }
 
     /**
       * The original name of the model.
