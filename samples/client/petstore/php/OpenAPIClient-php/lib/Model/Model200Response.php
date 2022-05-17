@@ -48,8 +48,25 @@ class Model200Response implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
-    public const ATTRIBUTE_NAME = 'name';
-    public const ATTRIBUTE_CLASS = 'class';
+    /**
+      * Return an object with the Model Fields
+      *
+      * @return Model200ResponseFields
+      */
+    public static function GetFields(): Model200ResponseFields
+    {
+        return new Model200ResponseFields();
+    }
+
+    /**
+      * Return an object with the Model Attributes
+      *
+      * @return Model200ResponseAttributes
+      */
+    public static function GetAttributes(): Model200ResponseAttributes
+    {
+        return new Model200ResponseAttributes();
+    }
 
     /**
       * The original name of the model.

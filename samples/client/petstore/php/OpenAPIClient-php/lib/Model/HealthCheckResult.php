@@ -48,7 +48,25 @@ class HealthCheckResult implements ModelInterface, ArrayAccess, \JsonSerializabl
 {
     public const DISCRIMINATOR = null;
 
-    public const ATTRIBUTE_NULLABLE_MESSAGE = 'nullable_message';
+    /**
+      * Return an object with the Model Fields
+      *
+      * @return HealthCheckResultFields
+      */
+    public static function GetFields(): HealthCheckResultFields
+    {
+        return new HealthCheckResultFields();
+    }
+
+    /**
+      * Return an object with the Model Attributes
+      *
+      * @return HealthCheckResultAttributes
+      */
+    public static function GetAttributes(): HealthCheckResultAttributes
+    {
+        return new HealthCheckResultAttributes();
+    }
 
     /**
       * The original name of the model.

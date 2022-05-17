@@ -47,7 +47,25 @@ class OuterObjectWithEnumProperty implements ModelInterface, ArrayAccess, \JsonS
 {
     public const DISCRIMINATOR = null;
 
-    public const ATTRIBUTE_VALUE = 'value';
+    /**
+      * Return an object with the Model Fields
+      *
+      * @return OuterObjectWithEnumPropertyFields
+      */
+    public static function GetFields(): OuterObjectWithEnumPropertyFields
+    {
+        return new OuterObjectWithEnumPropertyFields();
+    }
+
+    /**
+      * Return an object with the Model Attributes
+      *
+      * @return OuterObjectWithEnumPropertyAttributes
+      */
+    public static function GetAttributes(): OuterObjectWithEnumPropertyAttributes
+    {
+        return new OuterObjectWithEnumPropertyAttributes();
+    }
 
     /**
       * The original name of the model.

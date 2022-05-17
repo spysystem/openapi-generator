@@ -48,10 +48,25 @@ class Name implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
-    public const ATTRIBUTE_NAME = 'name';
-    public const ATTRIBUTE_SNAKE_CASE = 'snake_case';
-    public const ATTRIBUTE_PROPERTY = 'property';
-    public const ATTRIBUTE__123_NUMBER = '_123_number';
+    /**
+      * Return an object with the Model Fields
+      *
+      * @return NameFields
+      */
+    public static function GetFields(): NameFields
+    {
+        return new NameFields();
+    }
+
+    /**
+      * Return an object with the Model Attributes
+      *
+      * @return NameAttributes
+      */
+    public static function GetAttributes(): NameAttributes
+    {
+        return new NameAttributes();
+    }
 
     /**
       * The original name of the model.

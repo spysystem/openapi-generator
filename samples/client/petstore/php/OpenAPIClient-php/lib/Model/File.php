@@ -48,7 +48,25 @@ class File implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
-    public const ATTRIBUTE_SOURCE_URI = 'source_uri';
+    /**
+      * Return an object with the Model Fields
+      *
+      * @return FileFields
+      */
+    public static function GetFields(): FileFields
+    {
+        return new FileFields();
+    }
+
+    /**
+      * Return an object with the Model Attributes
+      *
+      * @return FileAttributes
+      */
+    public static function GetAttributes(): FileAttributes
+    {
+        return new FileAttributes();
+    }
 
     /**
       * The original name of the model.

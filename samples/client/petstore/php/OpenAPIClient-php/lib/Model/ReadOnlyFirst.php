@@ -47,8 +47,25 @@ class ReadOnlyFirst implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
-    public const ATTRIBUTE_BAR = 'bar';
-    public const ATTRIBUTE_BAZ = 'baz';
+    /**
+      * Return an object with the Model Fields
+      *
+      * @return ReadOnlyFirstFields
+      */
+    public static function GetFields(): ReadOnlyFirstFields
+    {
+        return new ReadOnlyFirstFields();
+    }
+
+    /**
+      * Return an object with the Model Attributes
+      *
+      * @return ReadOnlyFirstAttributes
+      */
+    public static function GetAttributes(): ReadOnlyFirstAttributes
+    {
+        return new ReadOnlyFirstAttributes();
+    }
 
     /**
       * The original name of the model.

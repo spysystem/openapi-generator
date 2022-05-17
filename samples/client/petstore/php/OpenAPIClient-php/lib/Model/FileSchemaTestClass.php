@@ -47,8 +47,25 @@ class FileSchemaTestClass implements ModelInterface, ArrayAccess, \JsonSerializa
 {
     public const DISCRIMINATOR = null;
 
-    public const ATTRIBUTE_FILE = 'file';
-    public const ATTRIBUTE_FILES = 'files';
+    /**
+      * Return an object with the Model Fields
+      *
+      * @return FileSchemaTestClassFields
+      */
+    public static function GetFields(): FileSchemaTestClassFields
+    {
+        return new FileSchemaTestClassFields();
+    }
+
+    /**
+      * Return an object with the Model Attributes
+      *
+      * @return FileSchemaTestClassAttributes
+      */
+    public static function GetAttributes(): FileSchemaTestClassAttributes
+    {
+        return new FileSchemaTestClassAttributes();
+    }
 
     /**
       * The original name of the model.

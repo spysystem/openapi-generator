@@ -47,8 +47,25 @@ class Category implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
-    public const ATTRIBUTE_ID = 'id';
-    public const ATTRIBUTE_NAME = 'name';
+    /**
+      * Return an object with the Model Fields
+      *
+      * @return CategoryFields
+      */
+    public static function GetFields(): CategoryFields
+    {
+        return new CategoryFields();
+    }
+
+    /**
+      * Return an object with the Model Attributes
+      *
+      * @return CategoryAttributes
+      */
+    public static function GetAttributes(): CategoryAttributes
+    {
+        return new CategoryAttributes();
+    }
 
     /**
       * The original name of the model.

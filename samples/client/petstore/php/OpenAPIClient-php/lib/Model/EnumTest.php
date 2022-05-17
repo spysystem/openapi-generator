@@ -47,14 +47,25 @@ class EnumTest implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
-    public const ATTRIBUTE_ENUM_STRING = 'enum_string';
-    public const ATTRIBUTE_ENUM_STRING_REQUIRED = 'enum_string_required';
-    public const ATTRIBUTE_ENUM_INTEGER = 'enum_integer';
-    public const ATTRIBUTE_ENUM_NUMBER = 'enum_number';
-    public const ATTRIBUTE_OUTER_ENUM = 'outer_enum';
-    public const ATTRIBUTE_OUTER_ENUM_INTEGER = 'outer_enum_integer';
-    public const ATTRIBUTE_OUTER_ENUM_DEFAULT_VALUE = 'outer_enum_default_value';
-    public const ATTRIBUTE_OUTER_ENUM_INTEGER_DEFAULT_VALUE = 'outer_enum_integer_default_value';
+    /**
+      * Return an object with the Model Fields
+      *
+      * @return EnumTestFields
+      */
+    public static function GetFields(): EnumTestFields
+    {
+        return new EnumTestFields();
+    }
+
+    /**
+      * Return an object with the Model Attributes
+      *
+      * @return EnumTestAttributes
+      */
+    public static function GetAttributes(): EnumTestAttributes
+    {
+        return new EnumTestAttributes();
+    }
 
     /**
       * The original name of the model.

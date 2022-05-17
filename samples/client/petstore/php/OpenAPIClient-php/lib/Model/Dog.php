@@ -45,7 +45,25 @@ class Dog extends Animal
 {
     public const DISCRIMINATOR = null;
 
-    public const ATTRIBUTE_BREED = 'breed';
+    /**
+      * Return an object with the Model Fields
+      *
+      * @return DogFields
+      */
+    public static function GetFields(): DogFields
+    {
+        return new DogFields();
+    }
+
+    /**
+      * Return an object with the Model Attributes
+      *
+      * @return DogAttributes
+      */
+    public static function GetAttributes(): DogAttributes
+    {
+        return new DogAttributes();
+    }
 
     /**
       * The original name of the model.

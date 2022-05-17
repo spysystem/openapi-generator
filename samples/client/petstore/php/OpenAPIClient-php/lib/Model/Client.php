@@ -47,7 +47,25 @@ class Client implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
-    public const ATTRIBUTE_CLIENT = 'client';
+    /**
+      * Return an object with the Model Fields
+      *
+      * @return ClientFields
+      */
+    public static function GetFields(): ClientFields
+    {
+        return new ClientFields();
+    }
+
+    /**
+      * Return an object with the Model Attributes
+      *
+      * @return ClientAttributes
+      */
+    public static function GetAttributes(): ClientAttributes
+    {
+        return new ClientAttributes();
+    }
 
     /**
       * The original name of the model.

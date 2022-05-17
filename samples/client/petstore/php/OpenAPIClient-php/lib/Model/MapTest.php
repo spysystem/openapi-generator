@@ -47,10 +47,25 @@ class MapTest implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
-    public const ATTRIBUTE_MAP_MAP_OF_STRING = 'map_map_of_string';
-    public const ATTRIBUTE_MAP_OF_ENUM_STRING = 'map_of_enum_string';
-    public const ATTRIBUTE_DIRECT_MAP = 'direct_map';
-    public const ATTRIBUTE_INDIRECT_MAP = 'indirect_map';
+    /**
+      * Return an object with the Model Fields
+      *
+      * @return MapTestFields
+      */
+    public static function GetFields(): MapTestFields
+    {
+        return new MapTestFields();
+    }
+
+    /**
+      * Return an object with the Model Attributes
+      *
+      * @return MapTestAttributes
+      */
+    public static function GetAttributes(): MapTestAttributes
+    {
+        return new MapTestAttributes();
+    }
 
     /**
       * The original name of the model.

@@ -47,9 +47,25 @@ class MixedPropertiesAndAdditionalPropertiesClass implements ModelInterface, Arr
 {
     public const DISCRIMINATOR = null;
 
-    public const ATTRIBUTE_UUID = 'uuid';
-    public const ATTRIBUTE_DATE_TIME = 'date_time';
-    public const ATTRIBUTE_MAP = 'map';
+    /**
+      * Return an object with the Model Fields
+      *
+      * @return MixedPropertiesAndAdditionalPropertiesClassFields
+      */
+    public static function GetFields(): MixedPropertiesAndAdditionalPropertiesClassFields
+    {
+        return new MixedPropertiesAndAdditionalPropertiesClassFields();
+    }
+
+    /**
+      * Return an object with the Model Attributes
+      *
+      * @return MixedPropertiesAndAdditionalPropertiesClassAttributes
+      */
+    public static function GetAttributes(): MixedPropertiesAndAdditionalPropertiesClassAttributes
+    {
+        return new MixedPropertiesAndAdditionalPropertiesClassAttributes();
+    }
 
     /**
       * The original name of the model.

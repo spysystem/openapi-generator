@@ -48,7 +48,25 @@ class ModelReturn implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
-    public const ATTRIBUTE_RETURN = 'return';
+    /**
+      * Return an object with the Model Fields
+      *
+      * @return ModelReturnFields
+      */
+    public static function GetFields(): ModelReturnFields
+    {
+        return new ModelReturnFields();
+    }
+
+    /**
+      * Return an object with the Model Attributes
+      *
+      * @return ModelReturnAttributes
+      */
+    public static function GetAttributes(): ModelReturnAttributes
+    {
+        return new ModelReturnAttributes();
+    }
 
     /**
       * The original name of the model.
