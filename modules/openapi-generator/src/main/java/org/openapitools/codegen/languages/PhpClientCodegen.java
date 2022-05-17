@@ -65,6 +65,8 @@ public class PhpClientCodegen extends AbstractPhpCodegen {
         supportsInheritance = true;
         setOutputDir("generated-code" + File.separator + "php");
         modelTestTemplateFiles.put("model_test.mustache", ".php");
+        modelTemplateFiles.put("model_fields.mustache", "Fields.php");
+        modelTemplateFiles.put("model_attributes.mustache", "Attributes.php");
         embeddedTemplateDir = templateDir = "php";
 
         // default HIDE_GENERATION_TIMESTAMP to true
