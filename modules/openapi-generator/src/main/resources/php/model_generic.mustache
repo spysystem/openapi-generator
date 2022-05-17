@@ -2,9 +2,25 @@ class {{classname}} {{#parentSchema}}extends {{{parent}}} {{/parentSchema}}{{^pa
 {
     public const DISCRIMINATOR = {{#discriminator}}'{{discriminatorName}}'{{/discriminator}}{{^discriminator}}null{{/discriminator}};
 
-    {{#vars}}
-    public const ATTRIBUTE_{{#lambda.uppercase}}{{name}}{{/lambda.uppercase}} = '{{name}}';
-    {{/vars}}
+    /**
+      * Return an object with the Model Fields
+      *
+      * @return {{classname}}ModelFields
+      */
+    public static function GetModelFields(): {{classname}}ModelFields
+    {
+        return new {{classname}}ModelFields();
+    }
+
+    /**
+      * Return an object with the Model Attributes
+      *
+      * @return {{classname}}ModelAttributes
+      */
+    public static function GetModelAttributes(): {{classname}}ModelAttributes
+    {
+        return new {{classname}}ModelAttributes();
+    }
 
     /**
       * The original name of the model.
