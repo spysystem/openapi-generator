@@ -2,10 +2,11 @@
 {{#models}}
 {{#model}}
 /**
- * {{classname}}
+ * {{classname}}ModelFields
  *
- * PHP version 8.1
+ * PHP version 7.2
  *
+ * @category Class
  * @package  {{invokerPackage}}
  * @author   OpenAPI Generator team
  * @link     https://openapi-generator.tech
@@ -19,29 +20,22 @@
  */
 
 namespace {{modelPackage}};
-{{^isEnum}}
-{{^parentSchema}}
-
-use ArrayAccess;
-use JsonSerializable;
-use InvalidArgumentException;
-use ReturnTypeWillChange;
-use {{invokerPackage}}\ObjectSerializer;
-{{/parentSchema}}
-{{/isEnum}}
 
 /**
- * {{classname}} Class Doc Comment
+ * {{classname}}ModelFields Class Doc Comment
  *
+ * @category Class
 {{#description}}
  * @description {{description}}
 {{/description}}
  * @package  {{invokerPackage}}
  * @author   OpenAPI Generator team
  * @link     https://openapi-generator.tech
-{{^isEnum}}
- * @implements ArrayAccess<string, mixed>
-{{/isEnum}}
  */
-{{#isEnum}}{{>model_enum}}{{/isEnum}}{{^isEnum}}{{>model_generic}}{{/isEnum}}
+class {{classname}}ModelFields{{#parentSchema}} extends {{{parent}}}ModelFields{{/parentSchema}}
+{
+{{#vars}}
+    public string $str{{nameInPascalCase}} = '{{baseName}}';
+{{/vars}}
+}
 {{/model}}{{/models}}
