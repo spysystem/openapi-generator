@@ -1,10 +1,10 @@
 # OpenAPI\Client\FakeClassnameTags123Api
 
-All URIs are relative to http://petstore.swagger.io:80/v2.
+All URIs are relative to http://petstore.swagger.io:80/v2, except if the operation defines another base path.
 
-Method | HTTP request | Description
-------------- | ------------- | -------------
-[**testClassname()**](FakeClassnameTags123Api.md#testClassname) | **PATCH** /fake_classname_test | To test class name in snake case
+| Method | HTTP request | Description |
+| ------------- | ------------- | ------------- |
+| [**testClassname()**](FakeClassnameTags123Api.md#testClassname) | **PATCH** /fake_classname_test | To test class name in snake case |
 
 
 ## `testClassname()`

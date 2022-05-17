@@ -45,6 +45,26 @@ class EnumTest implements ModelInterface, ArrayAccess, \JsonSerializable
     public const DISCRIMINATOR = null;
 
     /**
+      * Return an object with the Model Fields
+      *
+      * @return EnumTestModelFields
+      */
+    public static function GetModelFields(): EnumTestModelFields
+    {
+        return new EnumTestModelFields();
+    }
+
+    /**
+      * Return an object with the Model Attributes
+      *
+      * @return EnumTestModelAttributes
+      */
+    public static function GetModelAttributes(): EnumTestModelAttributes
+    {
+        return new EnumTestModelAttributes();
+    }
+
+    /**
       * The original name of the model.
       *
       * @var string
@@ -86,6 +106,29 @@ class EnumTest implements ModelInterface, ArrayAccess, \JsonSerializable
     ];
 
     /**
+      * Array of nullable properties. Used for (de)serialization
+      *
+      * @var boolean[]
+      */
+    protected static $openAPINullables = [
+        'enum_string' => false,
+		'enum_string_required' => false,
+		'enum_integer' => false,
+		'enum_number' => false,
+		'outer_enum' => true,
+		'outer_enum_integer' => false,
+		'outer_enum_default_value' => false,
+		'outer_enum_integer_default_value' => false
+    ];
+
+    /**
+      * If a nullable field gets set to null, insert it here
+      *
+      * @var boolean[]
+      */
+    protected $openAPINullablesSetToNull = [];
+
+    /**
      * Array of property to type mappings. Used for (de)serialization
      *
      * @return array
@@ -103,6 +146,60 @@ class EnumTest implements ModelInterface, ArrayAccess, \JsonSerializable
     public static function openAPIFormats()
     {
         return self::$openAPIFormats;
+    }
+
+    /**
+     * Array of property to nullable mappings. Used for (de)serialization
+     *
+     * @return array
+     */
+    public static function openAPINullables()
+    {
+        return self::$openAPINullables;
+    }
+
+    /**
+     * Array of nullable field names deliberately set to null
+     *
+     * @return array
+     */
+    public function getOpenAPINullablesSetToNull()
+    {
+        return $this->openAPINullablesSetToNull;
+    }
+
+    public function setOpenAPINullablesSetToNull($nullablesSetToNull)
+    {
+        $this->openAPINullablesSetToNull=$nullablesSetToNull;
+
+        return $this;
+    }
+
+    /**
+     * Checks if a property is nullable
+     *
+     * @return bool
+     */
+    public static function isNullable(string $property): bool
+    {
+        if (isset(self::$openAPINullables[$property])) {
+            return self::$openAPINullables[$property];
+        }
+
+        return false;
+    }
+
+    /**
+     * Checks if a nullable property is set to null.
+     *
+     * @return bool
+     */
+    public function isNullableSetToNull(string $property): bool
+    {
+        if (in_array($property, $this->getOpenAPINullablesSetToNull())) {
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -275,14 +372,25 @@ class EnumTest implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     public function __construct(array $data = null)
     {
-        $this->container['enum_string'] = $data['enum_string'] ?? null;
-        $this->container['enum_string_required'] = $data['enum_string_required'] ?? null;
-        $this->container['enum_integer'] = $data['enum_integer'] ?? null;
-        $this->container['enum_number'] = $data['enum_number'] ?? null;
-        $this->container['outer_enum'] = $data['outer_enum'] ?? null;
-        $this->container['outer_enum_integer'] = $data['outer_enum_integer'] ?? null;
-        $this->container['outer_enum_default_value'] = $data['outer_enum_default_value'] ?? null;
-        $this->container['outer_enum_integer_default_value'] = $data['outer_enum_integer_default_value'] ?? null;
+        $this->setIfExists('enum_string', $data, null);
+        $this->setIfExists('enum_string_required', $data, null);
+        $this->setIfExists('enum_integer', $data, null);
+        $this->setIfExists('enum_number', $data, null);
+        $this->setIfExists('outer_enum', $data, null);
+        $this->setIfExists('outer_enum_integer', $data, null);
+        $this->setIfExists('outer_enum_default_value', $data, null);
+        $this->setIfExists('outer_enum_integer_default_value', $data, null);
+    }
+
+    public function setIfExists(string $variableName, $fields, $defaultValue)
+    {
+        if (is_array($fields) && array_key_exists($variableName, $fields) && is_null($fields[$variableName]) && self::isNullable($variableName)) {
+            array_push($this->openAPINullablesSetToNull, $variableName);
+        }
+
+        $this->container[$variableName] = isset($fields[$variableName]) ? $fields[$variableName] : $defaultValue;
+
+        return $this;
     }
 
     /**
@@ -377,6 +485,11 @@ class EnumTest implements ModelInterface, ArrayAccess, \JsonSerializable
                 )
             );
         }
+
+        if (is_null($enum_string)) {
+            throw new \InvalidArgumentException('non-nullable enum_string cannot be null');
+        }
+
         $this->container['enum_string'] = $enum_string;
 
         return $this;
@@ -411,6 +524,11 @@ class EnumTest implements ModelInterface, ArrayAccess, \JsonSerializable
                 )
             );
         }
+
+        if (is_null($enum_string_required)) {
+            throw new \InvalidArgumentException('non-nullable enum_string_required cannot be null');
+        }
+
         $this->container['enum_string_required'] = $enum_string_required;
 
         return $this;
@@ -445,6 +563,11 @@ class EnumTest implements ModelInterface, ArrayAccess, \JsonSerializable
                 )
             );
         }
+
+        if (is_null($enum_integer)) {
+            throw new \InvalidArgumentException('non-nullable enum_integer cannot be null');
+        }
+
         $this->container['enum_integer'] = $enum_integer;
 
         return $this;
@@ -479,6 +602,11 @@ class EnumTest implements ModelInterface, ArrayAccess, \JsonSerializable
                 )
             );
         }
+
+        if (is_null($enum_number)) {
+            throw new \InvalidArgumentException('non-nullable enum_number cannot be null');
+        }
+
         $this->container['enum_number'] = $enum_number;
 
         return $this;
@@ -503,6 +631,18 @@ class EnumTest implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     public function setOuterEnum($outer_enum)
     {
+
+        if (is_null($outer_enum)) {
+            array_push($this->openAPINullablesSetToNull, 'outer_enum');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('outer_enum', $nullablesSetToNull);
+            if ($index !== FALSE) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+
         $this->container['outer_enum'] = $outer_enum;
 
         return $this;
@@ -527,6 +667,11 @@ class EnumTest implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     public function setOuterEnumInteger($outer_enum_integer)
     {
+
+        if (is_null($outer_enum_integer)) {
+            throw new \InvalidArgumentException('non-nullable outer_enum_integer cannot be null');
+        }
+
         $this->container['outer_enum_integer'] = $outer_enum_integer;
 
         return $this;
@@ -551,6 +696,11 @@ class EnumTest implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     public function setOuterEnumDefaultValue($outer_enum_default_value)
     {
+
+        if (is_null($outer_enum_default_value)) {
+            throw new \InvalidArgumentException('non-nullable outer_enum_default_value cannot be null');
+        }
+
         $this->container['outer_enum_default_value'] = $outer_enum_default_value;
 
         return $this;
@@ -575,6 +725,11 @@ class EnumTest implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     public function setOuterEnumIntegerDefaultValue($outer_enum_integer_default_value)
     {
+
+        if (is_null($outer_enum_integer_default_value)) {
+            throw new \InvalidArgumentException('non-nullable outer_enum_integer_default_value cannot be null');
+        }
+
         $this->container['outer_enum_integer_default_value'] = $outer_enum_integer_default_value;
 
         return $this;
@@ -653,7 +808,7 @@ class EnumTest implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     public function __toString()
     {
-        return json_encode(
+        return (string)json_encode(
             ObjectSerializer::sanitizeForSerialization($this),
             JSON_PRETTY_PRINT
         );

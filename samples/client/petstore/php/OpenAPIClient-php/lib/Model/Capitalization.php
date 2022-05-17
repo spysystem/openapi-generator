@@ -45,6 +45,26 @@ class Capitalization implements ModelInterface, ArrayAccess, \JsonSerializable
     public const DISCRIMINATOR = null;
 
     /**
+      * Return an object with the Model Fields
+      *
+      * @return CapitalizationModelFields
+      */
+    public static function GetModelFields(): CapitalizationModelFields
+    {
+        return new CapitalizationModelFields();
+    }
+
+    /**
+      * Return an object with the Model Attributes
+      *
+      * @return CapitalizationModelAttributes
+      */
+    public static function GetModelAttributes(): CapitalizationModelAttributes
+    {
+        return new CapitalizationModelAttributes();
+    }
+
+    /**
       * The original name of the model.
       *
       * @var string
@@ -82,6 +102,27 @@ class Capitalization implements ModelInterface, ArrayAccess, \JsonSerializable
     ];
 
     /**
+      * Array of nullable properties. Used for (de)serialization
+      *
+      * @var boolean[]
+      */
+    protected static $openAPINullables = [
+        'small_camel' => false,
+		'capital_camel' => false,
+		'small_snake' => false,
+		'capital_snake' => false,
+		'sca_eth_flow_points' => false,
+		'att_name' => false
+    ];
+
+    /**
+      * If a nullable field gets set to null, insert it here
+      *
+      * @var boolean[]
+      */
+    protected $openAPINullablesSetToNull = [];
+
+    /**
      * Array of property to type mappings. Used for (de)serialization
      *
      * @return array
@@ -99,6 +140,60 @@ class Capitalization implements ModelInterface, ArrayAccess, \JsonSerializable
     public static function openAPIFormats()
     {
         return self::$openAPIFormats;
+    }
+
+    /**
+     * Array of property to nullable mappings. Used for (de)serialization
+     *
+     * @return array
+     */
+    public static function openAPINullables()
+    {
+        return self::$openAPINullables;
+    }
+
+    /**
+     * Array of nullable field names deliberately set to null
+     *
+     * @return array
+     */
+    public function getOpenAPINullablesSetToNull()
+    {
+        return $this->openAPINullablesSetToNull;
+    }
+
+    public function setOpenAPINullablesSetToNull($nullablesSetToNull)
+    {
+        $this->openAPINullablesSetToNull=$nullablesSetToNull;
+
+        return $this;
+    }
+
+    /**
+     * Checks if a property is nullable
+     *
+     * @return bool
+     */
+    public static function isNullable(string $property): bool
+    {
+        if (isset(self::$openAPINullables[$property])) {
+            return self::$openAPINullables[$property];
+        }
+
+        return false;
+    }
+
+    /**
+     * Checks if a nullable property is set to null.
+     *
+     * @return bool
+     */
+    public function isNullableSetToNull(string $property): bool
+    {
+        if (in_array($property, $this->getOpenAPINullablesSetToNull())) {
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -201,12 +296,23 @@ class Capitalization implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     public function __construct(array $data = null)
     {
-        $this->container['small_camel'] = $data['small_camel'] ?? null;
-        $this->container['capital_camel'] = $data['capital_camel'] ?? null;
-        $this->container['small_snake'] = $data['small_snake'] ?? null;
-        $this->container['capital_snake'] = $data['capital_snake'] ?? null;
-        $this->container['sca_eth_flow_points'] = $data['sca_eth_flow_points'] ?? null;
-        $this->container['att_name'] = $data['att_name'] ?? null;
+        $this->setIfExists('small_camel', $data, null);
+        $this->setIfExists('capital_camel', $data, null);
+        $this->setIfExists('small_snake', $data, null);
+        $this->setIfExists('capital_snake', $data, null);
+        $this->setIfExists('sca_eth_flow_points', $data, null);
+        $this->setIfExists('att_name', $data, null);
+    }
+
+    public function setIfExists(string $variableName, $fields, $defaultValue)
+    {
+        if (is_array($fields) && array_key_exists($variableName, $fields) && is_null($fields[$variableName]) && self::isNullable($variableName)) {
+            array_push($this->openAPINullablesSetToNull, $variableName);
+        }
+
+        $this->container[$variableName] = isset($fields[$variableName]) ? $fields[$variableName] : $defaultValue;
+
+        return $this;
     }
 
     /**
@@ -252,6 +358,11 @@ class Capitalization implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     public function setSmallCamel($small_camel)
     {
+
+        if (is_null($small_camel)) {
+            throw new \InvalidArgumentException('non-nullable small_camel cannot be null');
+        }
+
         $this->container['small_camel'] = $small_camel;
 
         return $this;
@@ -276,6 +387,11 @@ class Capitalization implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     public function setCapitalCamel($capital_camel)
     {
+
+        if (is_null($capital_camel)) {
+            throw new \InvalidArgumentException('non-nullable capital_camel cannot be null');
+        }
+
         $this->container['capital_camel'] = $capital_camel;
 
         return $this;
@@ -300,6 +416,11 @@ class Capitalization implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     public function setSmallSnake($small_snake)
     {
+
+        if (is_null($small_snake)) {
+            throw new \InvalidArgumentException('non-nullable small_snake cannot be null');
+        }
+
         $this->container['small_snake'] = $small_snake;
 
         return $this;
@@ -324,6 +445,11 @@ class Capitalization implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     public function setCapitalSnake($capital_snake)
     {
+
+        if (is_null($capital_snake)) {
+            throw new \InvalidArgumentException('non-nullable capital_snake cannot be null');
+        }
+
         $this->container['capital_snake'] = $capital_snake;
 
         return $this;
@@ -348,6 +474,11 @@ class Capitalization implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     public function setScaEthFlowPoints($sca_eth_flow_points)
     {
+
+        if (is_null($sca_eth_flow_points)) {
+            throw new \InvalidArgumentException('non-nullable sca_eth_flow_points cannot be null');
+        }
+
         $this->container['sca_eth_flow_points'] = $sca_eth_flow_points;
 
         return $this;
@@ -372,6 +503,11 @@ class Capitalization implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     public function setAttName($att_name)
     {
+
+        if (is_null($att_name)) {
+            throw new \InvalidArgumentException('non-nullable att_name cannot be null');
+        }
+
         $this->container['att_name'] = $att_name;
 
         return $this;
@@ -450,7 +586,7 @@ class Capitalization implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     public function __toString()
     {
-        return json_encode(
+        return (string)json_encode(
             ObjectSerializer::sanitizeForSerialization($this),
             JSON_PRETTY_PRINT
         );

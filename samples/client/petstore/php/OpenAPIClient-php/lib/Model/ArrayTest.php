@@ -45,6 +45,26 @@ class ArrayTest implements ModelInterface, ArrayAccess, \JsonSerializable
     public const DISCRIMINATOR = null;
 
     /**
+      * Return an object with the Model Fields
+      *
+      * @return ArrayTestModelFields
+      */
+    public static function GetModelFields(): ArrayTestModelFields
+    {
+        return new ArrayTestModelFields();
+    }
+
+    /**
+      * Return an object with the Model Attributes
+      *
+      * @return ArrayTestModelAttributes
+      */
+    public static function GetModelAttributes(): ArrayTestModelAttributes
+    {
+        return new ArrayTestModelAttributes();
+    }
+
+    /**
       * The original name of the model.
       *
       * @var string
@@ -76,6 +96,24 @@ class ArrayTest implements ModelInterface, ArrayAccess, \JsonSerializable
     ];
 
     /**
+      * Array of nullable properties. Used for (de)serialization
+      *
+      * @var boolean[]
+      */
+    protected static $openAPINullables = [
+        'array_of_string' => false,
+		'array_array_of_integer' => false,
+		'array_array_of_model' => false
+    ];
+
+    /**
+      * If a nullable field gets set to null, insert it here
+      *
+      * @var boolean[]
+      */
+    protected $openAPINullablesSetToNull = [];
+
+    /**
      * Array of property to type mappings. Used for (de)serialization
      *
      * @return array
@@ -93,6 +131,60 @@ class ArrayTest implements ModelInterface, ArrayAccess, \JsonSerializable
     public static function openAPIFormats()
     {
         return self::$openAPIFormats;
+    }
+
+    /**
+     * Array of property to nullable mappings. Used for (de)serialization
+     *
+     * @return array
+     */
+    public static function openAPINullables()
+    {
+        return self::$openAPINullables;
+    }
+
+    /**
+     * Array of nullable field names deliberately set to null
+     *
+     * @return array
+     */
+    public function getOpenAPINullablesSetToNull()
+    {
+        return $this->openAPINullablesSetToNull;
+    }
+
+    public function setOpenAPINullablesSetToNull($nullablesSetToNull)
+    {
+        $this->openAPINullablesSetToNull=$nullablesSetToNull;
+
+        return $this;
+    }
+
+    /**
+     * Checks if a property is nullable
+     *
+     * @return bool
+     */
+    public static function isNullable(string $property): bool
+    {
+        if (isset(self::$openAPINullables[$property])) {
+            return self::$openAPINullables[$property];
+        }
+
+        return false;
+    }
+
+    /**
+     * Checks if a nullable property is set to null.
+     *
+     * @return bool
+     */
+    public function isNullableSetToNull(string $property): bool
+    {
+        if (in_array($property, $this->getOpenAPINullablesSetToNull())) {
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -186,9 +278,20 @@ class ArrayTest implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     public function __construct(array $data = null)
     {
-        $this->container['array_of_string'] = $data['array_of_string'] ?? null;
-        $this->container['array_array_of_integer'] = $data['array_array_of_integer'] ?? null;
-        $this->container['array_array_of_model'] = $data['array_array_of_model'] ?? null;
+        $this->setIfExists('array_of_string', $data, null);
+        $this->setIfExists('array_array_of_integer', $data, null);
+        $this->setIfExists('array_array_of_model', $data, null);
+    }
+
+    public function setIfExists(string $variableName, $fields, $defaultValue)
+    {
+        if (is_array($fields) && array_key_exists($variableName, $fields) && is_null($fields[$variableName]) && self::isNullable($variableName)) {
+            array_push($this->openAPINullablesSetToNull, $variableName);
+        }
+
+        $this->container[$variableName] = isset($fields[$variableName]) ? $fields[$variableName] : $defaultValue;
+
+        return $this;
     }
 
     /**
@@ -249,6 +352,11 @@ class ArrayTest implements ModelInterface, ArrayAccess, \JsonSerializable
         if (!is_null($array_of_string) && (count($array_of_string) < 0)) {
             throw new \InvalidArgumentException('invalid length for $array_of_string when calling ArrayTest., number of items must be greater than or equal to 0.');
         }
+
+        if (is_null($array_of_string)) {
+            throw new \InvalidArgumentException('non-nullable array_of_string cannot be null');
+        }
+
         $this->container['array_of_string'] = $array_of_string;
 
         return $this;
@@ -273,6 +381,11 @@ class ArrayTest implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     public function setArrayArrayOfInteger($array_array_of_integer)
     {
+
+        if (is_null($array_array_of_integer)) {
+            throw new \InvalidArgumentException('non-nullable array_array_of_integer cannot be null');
+        }
+
         $this->container['array_array_of_integer'] = $array_array_of_integer;
 
         return $this;
@@ -297,6 +410,11 @@ class ArrayTest implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     public function setArrayArrayOfModel($array_array_of_model)
     {
+
+        if (is_null($array_array_of_model)) {
+            throw new \InvalidArgumentException('non-nullable array_array_of_model cannot be null');
+        }
+
         $this->container['array_array_of_model'] = $array_array_of_model;
 
         return $this;
@@ -375,7 +493,7 @@ class ArrayTest implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     public function __toString()
     {
-        return json_encode(
+        return (string)json_encode(
             ObjectSerializer::sanitizeForSerialization($this),
             JSON_PRETTY_PRINT
         );

@@ -45,6 +45,26 @@ class FormatTest implements ModelInterface, ArrayAccess, \JsonSerializable
     public const DISCRIMINATOR = null;
 
     /**
+      * Return an object with the Model Fields
+      *
+      * @return FormatTestModelFields
+      */
+    public static function GetModelFields(): FormatTestModelFields
+    {
+        return new FormatTestModelFields();
+    }
+
+    /**
+      * Return an object with the Model Attributes
+      *
+      * @return FormatTestModelAttributes
+      */
+    public static function GetModelAttributes(): FormatTestModelAttributes
+    {
+        return new FormatTestModelAttributes();
+    }
+
+    /**
       * The original name of the model.
       *
       * @var string
@@ -102,6 +122,37 @@ class FormatTest implements ModelInterface, ArrayAccess, \JsonSerializable
     ];
 
     /**
+      * Array of nullable properties. Used for (de)serialization
+      *
+      * @var boolean[]
+      */
+    protected static $openAPINullables = [
+        'integer' => false,
+		'int32' => false,
+		'int64' => false,
+		'number' => false,
+		'float' => false,
+		'double' => false,
+		'decimal' => false,
+		'string' => false,
+		'byte' => false,
+		'binary' => false,
+		'date' => false,
+		'date_time' => false,
+		'uuid' => false,
+		'password' => false,
+		'pattern_with_digits' => false,
+		'pattern_with_digits_and_delimiter' => false
+    ];
+
+    /**
+      * If a nullable field gets set to null, insert it here
+      *
+      * @var boolean[]
+      */
+    protected $openAPINullablesSetToNull = [];
+
+    /**
      * Array of property to type mappings. Used for (de)serialization
      *
      * @return array
@@ -119,6 +170,60 @@ class FormatTest implements ModelInterface, ArrayAccess, \JsonSerializable
     public static function openAPIFormats()
     {
         return self::$openAPIFormats;
+    }
+
+    /**
+     * Array of property to nullable mappings. Used for (de)serialization
+     *
+     * @return array
+     */
+    public static function openAPINullables()
+    {
+        return self::$openAPINullables;
+    }
+
+    /**
+     * Array of nullable field names deliberately set to null
+     *
+     * @return array
+     */
+    public function getOpenAPINullablesSetToNull()
+    {
+        return $this->openAPINullablesSetToNull;
+    }
+
+    public function setOpenAPINullablesSetToNull($nullablesSetToNull)
+    {
+        $this->openAPINullablesSetToNull=$nullablesSetToNull;
+
+        return $this;
+    }
+
+    /**
+     * Checks if a property is nullable
+     *
+     * @return bool
+     */
+    public static function isNullable(string $property): bool
+    {
+        if (isset(self::$openAPINullables[$property])) {
+            return self::$openAPINullables[$property];
+        }
+
+        return false;
+    }
+
+    /**
+     * Checks if a nullable property is set to null.
+     *
+     * @return bool
+     */
+    public function isNullableSetToNull(string $property): bool
+    {
+        if (in_array($property, $this->getOpenAPINullablesSetToNull())) {
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -251,22 +356,33 @@ class FormatTest implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     public function __construct(array $data = null)
     {
-        $this->container['integer'] = $data['integer'] ?? null;
-        $this->container['int32'] = $data['int32'] ?? null;
-        $this->container['int64'] = $data['int64'] ?? null;
-        $this->container['number'] = $data['number'] ?? null;
-        $this->container['float'] = $data['float'] ?? null;
-        $this->container['double'] = $data['double'] ?? null;
-        $this->container['decimal'] = $data['decimal'] ?? null;
-        $this->container['string'] = $data['string'] ?? null;
-        $this->container['byte'] = $data['byte'] ?? null;
-        $this->container['binary'] = $data['binary'] ?? null;
-        $this->container['date'] = $data['date'] ?? null;
-        $this->container['date_time'] = $data['date_time'] ?? null;
-        $this->container['uuid'] = $data['uuid'] ?? null;
-        $this->container['password'] = $data['password'] ?? null;
-        $this->container['pattern_with_digits'] = $data['pattern_with_digits'] ?? null;
-        $this->container['pattern_with_digits_and_delimiter'] = $data['pattern_with_digits_and_delimiter'] ?? null;
+        $this->setIfExists('integer', $data, null);
+        $this->setIfExists('int32', $data, null);
+        $this->setIfExists('int64', $data, null);
+        $this->setIfExists('number', $data, null);
+        $this->setIfExists('float', $data, null);
+        $this->setIfExists('double', $data, null);
+        $this->setIfExists('decimal', $data, null);
+        $this->setIfExists('string', $data, null);
+        $this->setIfExists('byte', $data, null);
+        $this->setIfExists('binary', $data, null);
+        $this->setIfExists('date', $data, null);
+        $this->setIfExists('date_time', $data, null);
+        $this->setIfExists('uuid', $data, null);
+        $this->setIfExists('password', $data, null);
+        $this->setIfExists('pattern_with_digits', $data, null);
+        $this->setIfExists('pattern_with_digits_and_delimiter', $data, null);
+    }
+
+    public function setIfExists(string $variableName, $fields, $defaultValue)
+    {
+        if (is_array($fields) && array_key_exists($variableName, $fields) && is_null($fields[$variableName]) && self::isNullable($variableName)) {
+            array_push($this->openAPINullablesSetToNull, $variableName);
+        }
+
+        $this->container[$variableName] = isset($fields[$variableName]) ? $fields[$variableName] : $defaultValue;
+
+        return $this;
     }
 
     /**
@@ -392,6 +508,11 @@ class FormatTest implements ModelInterface, ArrayAccess, \JsonSerializable
             throw new \InvalidArgumentException('invalid value for $integer when calling FormatTest., must be bigger than or equal to 10.');
         }
 
+
+        if (is_null($integer)) {
+            throw new \InvalidArgumentException('non-nullable integer cannot be null');
+        }
+
         $this->container['integer'] = $integer;
 
         return $this;
@@ -424,6 +545,11 @@ class FormatTest implements ModelInterface, ArrayAccess, \JsonSerializable
             throw new \InvalidArgumentException('invalid value for $int32 when calling FormatTest., must be bigger than or equal to 20.');
         }
 
+
+        if (is_null($int32)) {
+            throw new \InvalidArgumentException('non-nullable int32 cannot be null');
+        }
+
         $this->container['int32'] = $int32;
 
         return $this;
@@ -448,6 +574,11 @@ class FormatTest implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     public function setInt64($int64)
     {
+
+        if (is_null($int64)) {
+            throw new \InvalidArgumentException('non-nullable int64 cannot be null');
+        }
+
         $this->container['int64'] = $int64;
 
         return $this;
@@ -478,6 +609,11 @@ class FormatTest implements ModelInterface, ArrayAccess, \JsonSerializable
         }
         if (($number < 32.1)) {
             throw new \InvalidArgumentException('invalid value for $number when calling FormatTest., must be bigger than or equal to 32.1.');
+        }
+
+
+        if (is_null($number)) {
+            throw new \InvalidArgumentException('non-nullable number cannot be null');
         }
 
         $this->container['number'] = $number;
@@ -512,6 +648,11 @@ class FormatTest implements ModelInterface, ArrayAccess, \JsonSerializable
             throw new \InvalidArgumentException('invalid value for $float when calling FormatTest., must be bigger than or equal to 54.3.');
         }
 
+
+        if (is_null($float)) {
+            throw new \InvalidArgumentException('non-nullable float cannot be null');
+        }
+
         $this->container['float'] = $float;
 
         return $this;
@@ -544,6 +685,11 @@ class FormatTest implements ModelInterface, ArrayAccess, \JsonSerializable
             throw new \InvalidArgumentException('invalid value for $double when calling FormatTest., must be bigger than or equal to 67.8.');
         }
 
+
+        if (is_null($double)) {
+            throw new \InvalidArgumentException('non-nullable double cannot be null');
+        }
+
         $this->container['double'] = $double;
 
         return $this;
@@ -568,6 +714,11 @@ class FormatTest implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     public function setDecimal($decimal)
     {
+
+        if (is_null($decimal)) {
+            throw new \InvalidArgumentException('non-nullable decimal cannot be null');
+        }
+
         $this->container['decimal'] = $decimal;
 
         return $this;
@@ -597,6 +748,11 @@ class FormatTest implements ModelInterface, ArrayAccess, \JsonSerializable
             throw new \InvalidArgumentException("invalid value for $string when calling FormatTest., must conform to the pattern /[a-z]/i.");
         }
 
+
+        if (is_null($string)) {
+            throw new \InvalidArgumentException('non-nullable string cannot be null');
+        }
+
         $this->container['string'] = $string;
 
         return $this;
@@ -621,6 +777,11 @@ class FormatTest implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     public function setByte($byte)
     {
+
+        if (is_null($byte)) {
+            throw new \InvalidArgumentException('non-nullable byte cannot be null');
+        }
+
         $this->container['byte'] = $byte;
 
         return $this;
@@ -645,6 +806,11 @@ class FormatTest implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     public function setBinary($binary)
     {
+
+        if (is_null($binary)) {
+            throw new \InvalidArgumentException('non-nullable binary cannot be null');
+        }
+
         $this->container['binary'] = $binary;
 
         return $this;
@@ -669,6 +835,11 @@ class FormatTest implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     public function setDate($date)
     {
+
+        if (is_null($date)) {
+            throw new \InvalidArgumentException('non-nullable date cannot be null');
+        }
+
         $this->container['date'] = $date;
 
         return $this;
@@ -693,6 +864,11 @@ class FormatTest implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     public function setDateTime($date_time)
     {
+
+        if (is_null($date_time)) {
+            throw new \InvalidArgumentException('non-nullable date_time cannot be null');
+        }
+
         $this->container['date_time'] = $date_time;
 
         return $this;
@@ -717,6 +893,11 @@ class FormatTest implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     public function setUuid($uuid)
     {
+
+        if (is_null($uuid)) {
+            throw new \InvalidArgumentException('non-nullable uuid cannot be null');
+        }
+
         $this->container['uuid'] = $uuid;
 
         return $this;
@@ -748,6 +929,11 @@ class FormatTest implements ModelInterface, ArrayAccess, \JsonSerializable
             throw new \InvalidArgumentException('invalid length for $password when calling FormatTest., must be bigger than or equal to 10.');
         }
 
+
+        if (is_null($password)) {
+            throw new \InvalidArgumentException('non-nullable password cannot be null');
+        }
+
         $this->container['password'] = $password;
 
         return $this;
@@ -777,6 +963,11 @@ class FormatTest implements ModelInterface, ArrayAccess, \JsonSerializable
             throw new \InvalidArgumentException("invalid value for $pattern_with_digits when calling FormatTest., must conform to the pattern /^\\d{10}$/.");
         }
 
+
+        if (is_null($pattern_with_digits)) {
+            throw new \InvalidArgumentException('non-nullable pattern_with_digits cannot be null');
+        }
+
         $this->container['pattern_with_digits'] = $pattern_with_digits;
 
         return $this;
@@ -804,6 +995,11 @@ class FormatTest implements ModelInterface, ArrayAccess, \JsonSerializable
 
         if (!is_null($pattern_with_digits_and_delimiter) && (!preg_match("/^image_\\d{1,3}$/i", $pattern_with_digits_and_delimiter))) {
             throw new \InvalidArgumentException("invalid value for $pattern_with_digits_and_delimiter when calling FormatTest., must conform to the pattern /^image_\\d{1,3}$/i.");
+        }
+
+
+        if (is_null($pattern_with_digits_and_delimiter)) {
+            throw new \InvalidArgumentException('non-nullable pattern_with_digits_and_delimiter cannot be null');
         }
 
         $this->container['pattern_with_digits_and_delimiter'] = $pattern_with_digits_and_delimiter;
@@ -884,7 +1080,7 @@ class FormatTest implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     public function __toString()
     {
-        return json_encode(
+        return (string)json_encode(
             ObjectSerializer::sanitizeForSerialization($this),
             JSON_PRETTY_PRINT
         );
