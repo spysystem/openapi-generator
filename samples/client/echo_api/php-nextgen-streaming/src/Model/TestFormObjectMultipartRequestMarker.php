@@ -47,6 +47,26 @@ class TestFormObjectMultipartRequestMarker implements ModelInterface, ArrayAcces
     public const DISCRIMINATOR = null;
 
     /**
+      * Return an object with the Model Fields
+      *
+      * @return DogAllOfModelFields
+      */
+    public static function GetModelFields(): DogAllOfModelFields
+    {
+        return new DogAllOfModelFields();
+    }
+
+    /**
+      * Return an object with the Model Attributes
+      *
+      * @return DogAllOfModelAttributes
+      */
+    public static function GetModelAttributes(): DogAllOfModelAttributes
+    {
+        return new DogAllOfModelAttributes();
+    }
+
+    /**
       * The original name of the model.
       *
       * @var string
@@ -388,7 +408,7 @@ class TestFormObjectMultipartRequestMarker implements ModelInterface, ArrayAcces
      */
     public function __toString(): string
     {
-        return json_encode(
+        return (string)json_encode(
             ObjectSerializer::sanitizeForSerialization($this),
             JSON_PRETTY_PRINT
         );

@@ -47,6 +47,26 @@ class TestQueryStyleFormExplodeTrueArrayStringQueryObjectParameter implements Mo
     public const DISCRIMINATOR = null;
 
     /**
+      * Return an object with the Model Fields
+      *
+      * @return CatAllOfModelFields
+      */
+    public static function GetModelFields(): CatAllOfModelFields
+    {
+        return new CatAllOfModelFields();
+    }
+
+    /**
+      * Return an object with the Model Attributes
+      *
+      * @return CatAllOfModelAttributes
+      */
+    public static function GetModelAttributes(): CatAllOfModelAttributes
+    {
+        return new CatAllOfModelAttributes();
+    }
+
+    /**
       * The original name of the model.
       *
       * @var string
@@ -388,7 +408,7 @@ class TestQueryStyleFormExplodeTrueArrayStringQueryObjectParameter implements Mo
      */
     public function __toString(): string
     {
-        return json_encode(
+        return (string)json_encode(
             ObjectSerializer::sanitizeForSerialization($this),
             JSON_PRETTY_PRINT
         );
