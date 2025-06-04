@@ -99,7 +99,7 @@ use {{invokerPackage}}\ObjectSerializer;
 	 */
 	public static function getSpecVersion()
 	{
-		return '{{{version}}}';
+		return Configuration::OPENAPI_DOCUMENT_VERSION;
 	}
 	#endregion
 
@@ -884,7 +884,7 @@ use {{invokerPackage}}\ObjectSerializer;
 
 		#region SPY Code
 		$options[RequestOptions::HEADERS]	= [
-			'X-OpenAPISpecVersion'	=> '{{{version}}}',
+			'X-OpenAPISpecVersion'	=> Configuration::OPENAPI_DOCUMENT_VERSION,
 		];
 		$bEnableXDebug	= $this->bXDebugOnNextRequest;
 
