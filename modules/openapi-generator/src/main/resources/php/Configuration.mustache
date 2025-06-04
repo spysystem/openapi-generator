@@ -32,6 +32,8 @@ class Configuration
     public const BOOLEAN_FORMAT_INT = 'int';
     public const BOOLEAN_FORMAT_STRING = 'string';
 
+    public const OPENAPI_DOCUMENT_VERSION = '{{version}}';
+
     /**
      * @var Configuration
      */
@@ -423,7 +425,7 @@ class Configuration
         $report  = 'PHP SDK ({{invokerPackage}}) Debug Report:' . PHP_EOL;
         $report .= '    OS: ' . php_uname() . PHP_EOL;
         $report .= '    PHP Version: ' . PHP_VERSION . PHP_EOL;
-        $report .= '    The version of the OpenAPI document: {{version}}' . PHP_EOL;
+        $report .= '    The version of the OpenAPI document: '. self::OPENAPI_DOCUMENT_VERSION . PHP_EOL;
         {{#artifactVersion}}
         $report .= '    SDK Package Version: {{.}}' . PHP_EOL;
         {{/artifactVersion}}
