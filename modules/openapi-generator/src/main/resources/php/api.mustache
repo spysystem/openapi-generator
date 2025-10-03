@@ -648,6 +648,14 @@ use {{invokerPackage}}\ObjectSerializer;
         $multipart = false;
 
         {{#queryParams}}
+        {{#dataFormat}}
+        if('{{dataFormat}}' === 'date' && ${{paramName}} instanceof \DateTimeInterface) {
+            ${{paramName}} = ${{paramName}}->format('Y-m-d');
+        } elseif ('{{dataFormat}}' === 'date-time' && ${{paramName}} instanceof \DateTimeInterface) {
+            ${{paramName}} = ${{paramName}}->format(\DateTime::ATOM);
+        }
+
+        {{/dataFormat}}
         // query params
         $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
             ${{paramName}},
