@@ -1,0 +1,5 @@
+BASE_IMAGE="maven:3-eclipse-temurin-17"
+REPO="spysystem/openapi-generator"
+TAG_WITHOUT_MINOR_VERSION="${REPO}:spy"
+
+
