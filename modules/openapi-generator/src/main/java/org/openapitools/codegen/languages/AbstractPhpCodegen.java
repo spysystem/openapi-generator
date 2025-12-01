@@ -762,7 +762,7 @@ public abstract class AbstractPhpCodegen extends DefaultCodegen implements Codeg
 
     @Override
     public String toEnumValue(String value, String datatype) {
-        if ("int".equals(datatype) || "float".equals(datatype)) {
+        if ("int".equals(datatype) || "float".equals(datatype) || "bool".equals(datatype)) {
             return value;
         } else {
             return "'" + escapeTextInSingleQuotes(value) + "'";
