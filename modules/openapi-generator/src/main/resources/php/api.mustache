@@ -670,9 +670,9 @@ use {{invokerPackage}}\ObjectSerializer;
 
         {{#queryParams}}
         {{#dataFormat}}
-        if('{{dataFormat}}' === 'date' && $financialyear instanceof \DateTimeInterface) {
+        if('{{dataFormat}}' === 'date' && ${{paramName}} instanceof \DateTimeInterface) {
             ${{paramName}} = ${{paramName}}->format('Y-m-d');
-        } elseif ('{{dataFormat}}' === 'date-time' && $financialyear instanceof \DateTimeInterface) {
+        } elseif ('{{dataFormat}}' === 'date-time' && ${{paramName}} instanceof \DateTimeInterface) {
             ${{paramName}} = ${{paramName}}->format(\DateTime::ATOM);
         }
 
