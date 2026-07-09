@@ -84,6 +84,9 @@ class ObjectSerializer
             if ($data instanceof ModelInterface) {
                 $formats = $data::openAPIFormats();
                 foreach ($data::openAPITypes() as $property => $openAPIType) {
+                    if ($data instanceof \ArrayAccess && !$data->offsetExists($property)) {
+                        continue;
+                    }
                     $getter = $data::getters()[$property];
                     $value = $data->$getter();
                     if ($value !== null && !in_array($openAPIType, [{{&primitives}}], true)) {
